@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadan Studio — Workspace Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#F0EDE6; --surface:#FAFAF7; --s2:#F5F2EB;
+  --rust:#C4522A; --rs:rgba(196,82,42,0.10); --rl:rgba(196,82,42,0.25);
+  --ink:#1A1410; --mid:#5a4d44; --faint:rgba(26,20,16,0.08); --ghost:rgba(26,20,16,0.04);
+  --notion:#191919; --gdrive:#1a73e8; --github:#24292f; --stripe:#635bff;
+  --serif:'Cormorant Garamond',Georgia,serif; --mono:'DM Mono',monospace;
+}
+body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-font-smoothing:antialiased; padding:40px 20px 80px; }
+.page { max-width:860px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+
+/* header */
+.hdr { background:var(--surface); border-radius:28px; padding:44px 52px 40px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(26,20,16,0.06); }
+.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(196,82,42,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
+.hdr-top { display:flex; align-items:center; gap:9px; margin-bottom:32px; }
+.dot { width:8px; height:8px; background:var(--rust); border-radius:50%; box-shadow:0 0 0 3px var(--rs); animation:breathe 3s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(196,82,42,0.05)} }
+.brand { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); }
+.hdr h1 { font-family:var(--serif); font-size:52px; font-weight:300; line-height:1; margin-bottom:10px; }
+.hdr h1 em { font-style:italic; color:var(--rust); }
+.hdr p { font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.05em; line-height:1.8; opacity:0.7; }
+.tabs { display:flex; gap:10px; flex-wrap:wrap; margin-top:28px; }
+.tab-btn { display:flex; align-items:center; gap:8px; padding:9px 18px; border-radius:999px; font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; border:1.5px solid var(--faint); background:var(--s2); color:var(--mid); cursor:pointer; transition:all 0.18s; }
+.tab-btn.active,.tab-btn:hover { border-color:var(--rust); color:var(--rust); background:var(--rs); }
+.tbdot { width:6px; height:6px; border-radius:50%; }
+
+/* panels */
+.panel { display:none; flex-direction:column; gap:14px; }
+.panel.active { display:flex; }
+
+/* section card */
+.sec { background:var(--surface); border-radius:24px; overflow:hidden; box-shadow:0 2px 12px rgba(26,20,16,0.05); }
+.sec-hd { display:flex; align-items:center; gap:14px; padding:20px 36px 18px; border-bottom:1px solid var(--faint); cursor:pointer; user-select:none; }
+.sec-hd:hover { background:var(--ghost); }
+.sec-icon { width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.sec-hd-text { flex:1; }
+.sec-name { font-family:var(--serif); font-size:18px; font-weight:400; color:var(--ink); line-height:1; }
+.sec-desc { font-family:var(--mono); font-size:10px; color:var(--mid); letter-spacing:0.04em; margin-top:3px; opacity:0.65; }
+.chevron { font-size:11px; color:var(--mid); opacity:0.4; transition:transform 0.2s; }
+.sec.open .chevron { transform:rotate(90deg); }
+.sec-body { display:none; padding:16px 36px 28px; }
+.sec.open .sec-body { display:block; }
+
+/* step list */
+.step-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+
+.step {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:16px 18px; border-radius:16px;
+  border:1.5px solid var(--faint); background:var(--s2);
+  transition:border-color 0.15s;
+}
+.step:hover { border-color:var(--rl); }
+.step.done-step { border-color:rgba(80,160,80,0.3); background:rgba(80,160,80,0.04); }
+
+.step-check {
+  width:20px; height:20px; border-radius:6px; border:1.5px solid var(--rl);
+  background:transparent; flex-shrink:0; display:flex; align-items:center;
+  justify-content:center; font-size:10px; color:transparent;
+  transition:all 0.15s; cursor:pointer; margin-top:1px;
+}
+.step.done-step .step-check { background:#2e7d2e; border-color:#2e7d2e; color:white; }
+
+.step-body { flex:1; }
+.step-title { font-family:var(--mono); font-size:12px; color:var(--ink); letter-spacing:0.03em; line-height:1.5; margin-bottom:6px; }
+.step.done-step .step-title { color:rgba(26,20,16,0.35); text-decoration:line-through; }
+.step-sub { font-family:var(--mono); font-size:10px; color:var(--mid); line-height:1.7; opacity:0.7; margin-bottom:8px; }
+
+/* link chips */
+.link-row { display:flex; flex-wrap:wrap; gap:7px; }
+.lchip {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 12px; border-radius:999px;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.07em;
+  text-decoration:none; transition:all 0.15s; border:1.5px solid;
+  white-space:nowrap;
+}
+.lchip:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+.lchip::before { content:'↗'; font-size:9px; }
+
+.lchip-rust   { background:var(--rs); color:var(--rust); border-color:var(--rl); }
+.lchip-notion { background:rgba(25,25,25,0.06); color:var(--notion); border-color:rgba(25,25,25,0.15); }
+.lchip-drive  { background:rgba(26,115,232,0.07); color:var(--gdrive); border-color:rgba(26,115,232,0.2); }
+.lchip-github { background:rgba(36,41,47,0.07); color:var(--github); border-color:rgba(36,41,47,0.15); }
+.lchip-stripe { background:rgba(99,91,255,0.08); color:var(--stripe); border-color:rgba(99,91,255,0.2); }
+.lchip-green  { background:rgba(80,160,80,0.08); color:#2e7d2e; border-color:rgba(80,160,80,0.25); }
+.lchip-docuseal { background:rgba(14,120,200,0.08); color:#0e78c8; border-color:rgba(14,120,200,0.2); }
+
+/* note box */
+.note-box { background:var(--rs); border:1px solid var(--rl); border-radius:14px; padding:13px 18px; font-family:var(--mono); font-size:11px; color:var(--rust); letter-spacing:0.04em; line-height:1.7; margin-bottom:18px; }
+
+/* stripe products */
+.sp-grid { display:flex; flex-direction:column; gap:9px; }
+.sp-card { border:1.5px solid var(--faint); border-radius:16px; padding:16px 18px; background:var(--s2); display:flex; gap:14px; align-items:flex-start; }
+.sp-type { font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:4px 10px; border-radius:999px; white-space:nowrap; flex-shrink:0; }
+.sp-type.rec  { background:rgba(80,160,80,0.10); color:#2e7d2e; border:1px solid rgba(80,160,80,0.25); }
+.sp-type.once { background:var(--rs); color:var(--rust); border:1px solid var(--rl); }
+.sp-info { flex:1; }
+.sp-name  { font-family:var(--mono); font-size:12px; color:var(--ink); margin-bottom:3px; }
+.sp-desc  { font-family:var(--mono); font-size:10px; color:var(--mid); line-height:1.6; opacity:0.7; margin-bottom:6px; }
+.sp-price { font-family:var(--serif); font-size:20px; color:var(--rust); }
+
+.divlabel { font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(26,20,16,0.25); display:flex; align-items:center; gap:10px; padding:8px 0; }
+.divlabel::before,.divlabel::after { content:''; flex:1; height:1px; background:var(--faint); }
+
+/* progress bar */
+.progress-wrap { margin-bottom:6px; }
+.progress-label { display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; color:var(--mid); margin-bottom:6px; }
+.progress-bar { height:4px; border-radius:999px; background:var(--faint); overflow:hidden; }
+.progress-fill { height:100%; border-radius:999px; background:var(--rust); transition:width 0.4s ease; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-blur"></div>
+    <div class="hdr-top"><div class="dot"></div><span class="brand">Zadan Studio</span></div>
+    <h1>Workspace <em>Setup</em></h1>
+    <p>Every step links directly to the right place. No hunting around.<br>Work through each tab top to bottom — takes about 20 minutes total.</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('notion',this)"><span class="tbdot" style="background:var(--notion)"></span>Notion</button>
+      <button class="tab-btn" onclick="showTab('gdrive',this)"><span class="tbdot" style="background:var(--gdrive)"></span>Google Drive</button>
+      <button class="tab-btn" onclick="showTab('github',this)"><span class="tbdot" style="background:var(--github)"></span>GitHub</button>
+      <button class="tab-btn" onclick="showTab('stripe',this)"><span class="tbdot" style="background:var(--stripe)"></span>Stripe</button>
+      <button class="tab-btn" onclick="showTab('docuseal',this)"><span class="tbdot" style="background:#0e78c8"></span>Docuseal</button>
+      <button class="tab-btn" onclick="showTab('checklist',this)"><span class="tbdot" style="background:var(--rust)"></span>Checklist</button>
+    </div>
+  </div>
+
+  <!-- ══ NOTION ══ -->
+  <div class="panel active" id="panel-notion">
+
+    <div class="sec open">
+      <div class="sec-hd" onclick="toggleSec(this)">
+        <div class="sec-icon" style="background:rgba(25,25,25,0.07)">📋</div>
+        <div class="sec-hd-text"><p class="sec-name">Notion — Create your workspace</p><p class="sec-desc">4 pages, all your business info in one place</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="note-box">Start here → create a free account, then make a new page called "Zadan Studio" and build the 4 pages below inside it.</div>
+        <ul class="step-list">
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Create your Notion account</p>
+              <p class="step-sub">Free plan is all you need right now</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.com" target="_blank">notion.com — Sign up</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Page 1 — Business Model</p>
+              <p class="step-sub">Paste in your packages, prices, Care plans, deposit rules. Copy from the reference below.</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
+                <a class="lchip lchip-rust" href="https://notion.so/templates/business-model-canvas" target="_blank">Business model template</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Page 2 — Brand Guidelines</p>
+              <p class="step-sub">Tagline: "Built to bring you business." · Cream #F5F1EA · Rust #C4522A · Ink #1A1410 · Fonts: Cormorant Garamond + DM Mono</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Page 3 — Client Tracker (database)</p>
+              <p class="step-sub">Columns: Client Name · Business · Package · Status · Deposit Paid · Launch Date · Care Plan · Monthly MRR</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
+                <a class="lchip lchip-rust" href="https://notion.so/templates/client-tracker" target="_blank">Client tracker template</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Page 4 — Stripe Setup Notes</p>
+              <p class="step-sub">Paste all your Stripe payment link URLs here after creating them. Save deposit links to phone notes too.</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/payment-links" target="_blank">Stripe payment links</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Page 5 — Email & DM Templates</p>
+              <p class="step-sub">Cold outreach, follow-up after proposal, post-launch Care upsell, 48hr no-reply nudge</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Page 6 — Operations & Onboarding</p>
+              <p class="step-sub">Client onboarding checklist, project workflow (Day 1–7), Care plan monthly delivery SOP</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
+                <a class="lchip lchip-rust" href="https://notion.so/templates/project-management" target="_blank">Project template</a>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GOOGLE DRIVE ══ -->
+  <div class="panel" id="panel-gdrive">
+    <div class="sec open">
+      <div class="sec-hd" onclick="toggleSec(this)">
+        <div class="sec-icon" style="background:rgba(26,115,232,0.08)">📁</div>
+        <div class="sec-hd-text"><p class="sec-name">Google Drive — File storage</p><p class="sec-desc">5 folders, one template client folder to duplicate every time</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="note-box">Go to Google Drive → New → Folder → Name it "Zadan Studio" → Create the 5 folders below inside it</div>
+        <ul class="step-list">
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Open Google Drive</p>
+              <div class="link-row">
+                <a class="lchip lchip-drive" href="https://drive.google.com" target="_blank">drive.google.com</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">📁 01 — Business</p>
+              <p class="step-sub">Upload: Business Model PDF, Brand Guidelines, Service Agreement template</p>
+              <div class="link-row">
+                <a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">My Drive → create folder</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">📁 02 — Sales & Proposals</p>
+              <p class="step-sub">Upload the proposal template HTML file here. Create a "Sent Proposals" subfolder — save one PDF per client after sending.</p>
+              <div class="link-row">
+                <a class="lchip lchip-rust" href="zadan-proposal-template.html" target="_blank">Proposal template (this file)</a>
+                <a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Upload to Drive</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">📁 03 — Clients (one subfolder per client)</p>
+              <p class="step-sub">Create a "_Template" folder with these subfolders inside: Signed Contract · Assets (logo, photos) · Proposal Sent · Invoice Deposit · Invoice Balance. Duplicate this for every new client.</p>
+              <div class="link-row">
+                <a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Create in Drive</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">📁 04 — Website Assets</p>
+              <p class="step-sub">Logo files (SVG + PNG, dark & light), portfolio screenshots, brand color swatches</p>
+              <div class="link-row">
+                <a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Create in Drive</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">📁 05 — Finance</p>
+              <p class="step-sub">Revenue tracker spreadsheet (month, client, amount, Care MRR). Download Stripe invoices here monthly.</p>
+              <div class="link-row">
+                <a class="lchip lchip-drive" href="https://docs.google.com/spreadsheets/create" target="_blank">New Google Sheet → Revenue Tracker</a>
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/invoices" target="_blank">Stripe invoices</a>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GITHUB ══ -->
+  <div class="panel" id="panel-github">
+    <div class="sec open">
+      <div class="sec-hd" onclick="toggleSec(this)">
+        <div class="sec-icon" style="background:rgba(36,41,47,0.07)">🐙</div>
+        <div class="sec-hd-text"><p class="sec-name">GitHub — Website code backup</p><p class="sec-desc">Free forever, never lose your site code</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="note-box">You don't need to know how to code to use GitHub. Just drag and drop your files into the repo from the browser. It auto-saves every version.</div>
+        <ul class="step-list">
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Create your GitHub account</p>
+              <div class="link-row">
+                <a class="lchip lchip-github" href="https://github.com/signup" target="_blank">github.com — Sign up free</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Create repo: zadanstudio-website</p>
+              <p class="step-sub">Set to Private. Add a README. This holds all your site code.</p>
+              <div class="link-row">
+                <a class="lchip lchip-github" href="https://github.com/new" target="_blank">github.com/new — Create repo</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Upload your site files</p>
+              <p class="step-sub">index.html, portfolio.html, about.html, contact.html, style.css, assets/ folder. Drag and drop directly in the browser — no terminal needed.</p>
+              <div class="link-row">
+                <a class="lchip lchip-github" href="https://github.com" target="_blank">Go to your repo → Add file → Upload</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Link the GitHub repo in your Notion workspace</p>
+              <p class="step-sub">Notion → Website page → paste the GitHub repo URL so you can always find the code from Notion</p>
+              <div class="link-row">
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">Open Notion website page</a>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STRIPE ══ -->
+  <div class="panel" id="panel-stripe">
+    <div class="sec open">
+      <div class="sec-hd" onclick="toggleSec(this)">
+        <div class="sec-icon" style="background:rgba(99,91,255,0.08)">💳</div>
+        <div class="sec-hd-text"><p class="sec-name">Stripe — Products & payment links</p><p class="sec-desc">2 done · 4 to create · then generate payment links for all 6</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="sec-body">
+
+        <div class="divlabel">Already done ✓</div>
+        <div class="sp-grid" style="margin-bottom:18px">
+          <div class="sp-card" style="border-color:rgba(80,160,80,0.3);background:rgba(80,160,80,0.04)">
+            <span class="sp-type rec">Recurring ✓</span>
+            <div class="sp-info"><p class="sp-name">Care Basic — Zadan Studio</p><p class="sp-desc">Monthly hosting, backups, uptime monitoring & security updates</p><p class="sp-price">$79<span style="font-family:var(--mono);font-size:12px;color:var(--mid)">/mo</span></p></div>
+          </div>
+          <div class="sp-card" style="border-color:rgba(80,160,80,0.3);background:rgba(80,160,80,0.04)">
+            <span class="sp-type rec">Recurring ✓</span>
+            <div class="sp-info"><p class="sp-name">Care Pro — Zadan Studio</p><p class="sp-desc">Hosting, backups, 2hrs edits/month, Google Business post, ranking report & priority support</p><p class="sp-price">$149<span style="font-family:var(--mono);font-size:12px;color:var(--mid)">/mo</span></p></div>
+          </div>
+        </div>
+
+        <div class="divlabel">Create these 4 now</div>
+        <ul class="step-list" style="margin-bottom:18px">
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Essential Website — Deposit · $375</p>
+              <p class="step-sub">Name: "Essential Website — Deposit" · Description: "50% deposit for Essential package (5-page website, 7-day delivery)" · One-off · $375</p>
+              <div class="link-row">
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create in Stripe</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Essential Website — Balance · $375</p>
+              <p class="step-sub">Name: "Essential Website — Balance" · Description: "Remaining balance for Essential package, due on launch day" · One-off · $375</p>
+              <div class="link-row">
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create in Stripe</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Professional Website — Deposit · $600</p>
+              <p class="step-sub">Name: "Professional Website — Deposit" · Description: "50% deposit for Professional package (8-page website, SEO, booking, Google Business)" · One-off · $600</p>
+              <div class="link-row">
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create in Stripe</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Professional Website — Balance · $600</p>
+              <p class="step-sub">Name: "Professional Website — Balance" · Description: "Remaining balance for Professional package, due on launch day" · One-off · $600</p>
+              <div class="link-row">
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create in Stripe</a>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+
+        <div class="divlabel">After all 6 products exist — generate payment links</div>
+        <ul class="step-list">
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Create a payment link for each of the 6 products</p>
+              <p class="step-sub">Go to each product → click "Create payment link" → copy the URL → paste into your Notion Stripe Notes page. Save the two deposit links to your phone.</p>
+              <div class="link-row">
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products" target="_blank">All Stripe products</a>
+                <a class="lchip lchip-stripe" href="https://dashboard.stripe.com/payment-links" target="_blank">Payment links</a>
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">Paste into Notion notes</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DOCUSEAL ══ -->
+  <div class="panel" id="panel-docuseal">
+    <div class="sec open">
+      <div class="sec-hd" onclick="toggleSec(this)">
+        <div class="sec-icon" style="background:rgba(14,120,200,0.08)">✍️</div>
+        <div class="sec-hd-text"><p class="sec-name">Docuseal — E-signature contracts</p><p class="sec-desc">Free, takes 10 minutes to set up your first template</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="note-box">Docuseal is free for up to 10 documents/month — plenty for now. You'll build one contract template and reuse it for every client.</div>
+        <ul class="step-list">
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Create your Docuseal account</p>
+              <div class="link-row">
+                <a class="lchip lchip-docuseal" href="https://docuseal.com" target="_blank">docuseal.com — Sign up free</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Create your contract template</p>
+              <p class="step-sub">New template → upload a PDF or use their editor. Include: project scope, price, payment terms (50/50), timeline, revision policy, ownership of files on final payment.</p>
+              <div class="link-row">
+                <a class="lchip lchip-docuseal" href="https://app.docuseal.com/templates/new" target="_blank">New template in Docuseal</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Add signature + date fields</p>
+              <p class="step-sub">Drag a Signature field and a Date field to the bottom of the contract. Add fields for: Client Name, Business Name, Package, Total Price so you can fill them in per client.</p>
+              <div class="link-row">
+                <a class="lchip lchip-docuseal" href="https://app.docuseal.com/templates" target="_blank">Your templates</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">Test it — send yourself a copy to sign</p>
+              <p class="step-sub">Send the template to your own email, sign it, confirm it works. Then save the template link in Notion → Operations → Contracts.</p>
+              <div class="link-row">
+                <a class="lchip lchip-docuseal" href="https://app.docuseal.com" target="_blank">Docuseal dashboard</a>
+                <a class="lchip lchip-notion" href="https://notion.new" target="_blank">Save link in Notion</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" onclick="toggleStep(this)">
+            <div class="step-check">✓</div>
+            <div class="step-body">
+              <p class="step-title">How to use it for each client</p>
+              <p class="step-sub">Dashboard → Use template → fill in their name + package → enter their email → Send. They get a link, sign on their phone or laptop, you get notified, both get a PDF copy automatically.</p>
+              <div class="link-row">
+                <a class="lchip lchip-docuseal" href="https://app.docuseal.com" target="_blank">Docuseal dashboard</a>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHECKLIST ══ -->
+  <div class="panel" id="panel-checklist">
+    <div class="sec open">
+      <div class="sec-hd" onclick="toggleSec(this)">
+        <div class="sec-icon" style="background:var(--rs)">✅</div>
+        <div class="sec-hd-text"><p class="sec-name">Full Setup Checklist</p><p class="sec-desc">Click each item as you finish — progress saves in this tab</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="sec-body">
+
+        <div class="progress-wrap">
+          <div class="progress-label"><span id="prog-label">0 of 20 done</span><span id="prog-pct">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+        </div>
+
+        <ul class="step-list" id="master-cl" style="margin-top:16px">
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create Notion account</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.com" target="_blank">notion.com</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create "Zadan Studio" workspace + 6 pages in Notion</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.new" target="_blank">notion.new</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create "Zadan Studio" folder in Google Drive</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com" target="_blank">drive.google.com</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create 5 subfolders in Drive (Business, Sales, Clients, Assets, Finance)</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">My Drive</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Upload proposal template to Drive → 02 Sales & Proposals</p><div class="link-row"><a class="lchip lchip-rust" href="zadan-proposal-template.html" target="_blank">Proposal template</a><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Drive upload</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create _Template Client Folder in Drive → 03 Clients</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">My Drive</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create Revenue Tracker spreadsheet in Drive → 05 Finance</p><div class="link-row"><a class="lchip lchip-drive" href="https://docs.google.com/spreadsheets/create" target="_blank">New Google Sheet</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create GitHub account</p><div class="link-row"><a class="lchip lchip-github" href="https://github.com/signup" target="_blank">github.com/signup</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create private repo: zadanstudio-website</p><div class="link-row"><a class="lchip lchip-github" href="https://github.com/new" target="_blank">github.com/new</a></div></div></li>
+
+          <li class="step done-step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Care Basic $79/mo — Done ✓</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products" target="_blank">Stripe products</a></div></div></li>
+
+          <li class="step done-step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Care Pro $149/mo — Done ✓</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products" target="_blank">Stripe products</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Create Essential Website — Deposit ($375)</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create product</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Create Essential Website — Balance ($375)</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create product</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Create Professional Website — Deposit ($600)</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create product</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Create Professional Website — Balance ($600)</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products/create" target="_blank">Create product</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create payment links for all 6 Stripe products</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products" target="_blank">Stripe products</a><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/payment-links" target="_blank">Payment links</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Paste all payment link URLs into Notion → Stripe Setup Notes</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.new" target="_blank">Notion</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Save deposit payment links to phone notes</p></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create Docuseal account + build contract template</p><div class="link-row"><a class="lchip lchip-docuseal" href="https://docuseal.com" target="_blank">docuseal.com</a><a class="lchip lchip-docuseal" href="https://app.docuseal.com/templates/new" target="_blank">New template</a></div></div></li>
+
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Link everything — paste Drive, GitHub, Docuseal URLs into your Notion pages</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.com" target="_blank">Open Notion</a></div></div></li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleSec(hd) { hd.parentElement.classList.toggle('open'); }
+
+function toggleStep(el, updateProgress) {
+  if (event.target.tagName === 'A') return;
+  el.classList.toggle('done-step');
+  if (updateProgress) updateProg();
+}
+
+function updateProg() {
+  const all = document.querySelectorAll('#master-cl .step');
+  const done = document.querySelectorAll('#master-cl .step.done-step');
+  const pct = Math.round((done.length / all.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = done.length + ' of ' + all.length + ' done';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+// init progress for pre-checked items
+updateProg();
+</script>
+</body>
+</html>

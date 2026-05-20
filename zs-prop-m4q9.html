@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal — Zadan Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #F0EDE6;
+  --surface:   #FAFAF7;
+  --surface2:  #F5F2EB;
+  --rust:      #C4522A;
+  --rust-soft: rgba(196,82,42,0.10);
+  --rust-line: rgba(196,82,42,0.25);
+  --ink:       #1A1410;
+  --ink-mid:   #5a4d44;
+  --ink-faint:  rgba(26,20,16,0.10);
+  --ink-ghost:  rgba(26,20,16,0.05);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono:  'DM Mono', monospace;
+  --r-sm:  12px;
+  --r-md:  18px;
+  --r-lg:  24px;
+  --r-xl:  32px;
+}
+
+@media print {
+  body { background: #F0EDE6 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .no-print { display: none !important; }
+  .page { max-width: 100% !important; padding-bottom: 0 !important; }
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+  padding: 48px 20px 120px;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── CARD BASE ── */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26,20,16,0.06), 0 1px 3px rgba(26,20,16,0.04);
+}
+
+/* ── HERO CARD ── */
+.hero {
+  padding: 52px 56px 48px;
+  position: relative;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.hero-blur {
+  position: absolute;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,82,42,0.12) 0%, transparent 70%);
+  top: -100px; right: -80px;
+  pointer-events: none;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 48px;
+}
+
+.studio-mark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mark-dot {
+  width: 8px; height: 8px;
+  background: var(--rust);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--rust-soft);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,100% { box-shadow: 0 0 0 3px var(--rust-soft); }
+  50%      { box-shadow: 0 0 0 6px rgba(196,82,42,0.06); }
+}
+
+.studio-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+
+.meta-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: right;
+}
+
+.meta-row { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+
+.meta-key {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(26,20,16,0.3);
+}
+
+.meta-val {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mid);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: right;
+  min-width: 130px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, color 0.15s;
+  padding-bottom: 1px;
+}
+.meta-val:focus { border-bottom-color: var(--rust-line); color: var(--ink); }
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 14px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--rust);
+  opacity: 0.6;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 68px;
+  font-weight: 300;
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.hero h1 em { font-style: italic; color: var(--rust); display: block; }
+
+.hero-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mid);
+  letter-spacing: 0.05em;
+  line-height: 1.9;
+  max-width: 360px;
+  opacity: 0.7;
+}
+
+/* ── PILL ROW ── */
+.pill-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 0 56px 48px;
+  margin-top: -16px;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--rust-soft);
+  border: 1px solid var(--rust-line);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--rust);
+}
+
+.pill::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--rust);
+  border-radius: 50%;
+}
+
+/* ── SECTION CARD ── */
+.sec { padding: 40px 48px; }
+
+.sec-hd {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.sec-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--rust);
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+}
+
+.sec-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(26,20,16,0.35);
+}
+
+.sec-rule { flex: 1; height: 1px; background: var(--ink-faint); }
+
+/* ── INTRO ── */
+.intro-text {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink-mid);
+  max-width: 580px;
+}
+
+.intro-text strong { color: var(--ink); font-weight: 600; }
+
+/* ── PACKAGES ── */
+.pkg-stack { display: flex; flex-direction: column; gap: 12px; }
+
+.pkg {
+  border: 1.5px solid var(--ink-faint);
+  border-radius: var(--r-lg);
+  padding: 28px 32px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pkg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-lg);
+  box-shadow: inset 0 0 0 0 var(--rust-soft);
+  transition: box-shadow 0.2s;
+}
+
+.pkg:hover { border-color: var(--rust-line); background: #fdf8f5; }
+.pkg.active {
+  border-color: var(--rust);
+  background: #fdf8f5;
+  box-shadow: 0 4px 24px rgba(196,82,42,0.1);
+}
+
+.pkg-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pkg-name {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.pkg-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--rust);
+  background: var(--rust-soft);
+  border: 1px solid var(--rust-line);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+.pkg-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.pkg-cur {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--ink-mid);
+  margin-top: 5px;
+  align-self: flex-start;
+}
+
+.pkg-price {
+  font-family: var(--serif);
+  font-size: 46px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.pkg-deposit {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(26,20,16,0.3);
+  margin-bottom: 22px;
+  letter-spacing: 0.04em;
+}
+
+.pkg-items {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 28px;
+}
+
+.pkg-items li {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.02em;
+}
+
+.pkg-items li::before {
+  content: '→';
+  color: var(--rust);
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+/* ── CARE PLANS ── */
+.care-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.care-card {
+  border: 1.5px solid var(--ink-faint);
+  border-radius: var(--r-lg);
+  padding: 26px 28px;
+  background: var(--surface2);
+  transition: border-color 0.2s;
+}
+
+.care-card:hover { border-color: var(--rust-line); }
+
+.care-card.pro {
+  border-color: var(--rust-line);
+  background: #fdf8f5;
+}
+
+.care-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 8px;
+}
+
+.care-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.care-price {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 18px;
+  line-height: 1;
+}
+
+.care-price sub {
+  font-size: 12px;
+  color: var(--ink-mid);
+  font-family: var(--mono);
+  font-weight: 300;
+}
+
+.care-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.care-list li {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-mid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ink-ghost);
+  letter-spacing: 0.02em;
+}
+
+.care-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+.care-list li::before {
+  content: '✓';
+  color: var(--rust);
+  font-size: 9px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+/* ── TIMELINE ── */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 8px; left: 8px; right: 8px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rust) 0%, var(--rust-line) 60%, transparent 100%);
+}
+
+.tl-step { padding-top: 28px; padding-right: 12px; }
+
+.tl-dot {
+  width: 17px; height: 17px;
+  border: 1.5px solid var(--rust-line);
+  border-radius: 50%;
+  background: var(--surface);
+  margin-bottom: 14px;
+  position: relative;
+  top: -22px;
+}
+
+.tl-dot.lit {
+  background: var(--rust);
+  border-color: var(--rust);
+  box-shadow: 0 0 0 4px var(--rust-soft);
+}
+
+.tl-day {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--rust);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.tl-label {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+/* ── PAYMENT ── */
+.pay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.pay-block {
+  border: 1.5px solid var(--ink-faint);
+  border-radius: var(--r-lg);
+  padding: 26px 30px;
+  background: var(--surface2);
+}
+
+.pay-block.primary {
+  background: var(--rust);
+  border-color: var(--rust);
+}
+
+.pay-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(26,20,16,0.3);
+  margin-bottom: 10px;
+}
+
+.pay-block.primary .pay-label { color: rgba(245,241,234,0.55); }
+
+.pay-amount {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.pay-block.primary .pay-amount { color: #F5F1EA; }
+
+.pay-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(26,20,16,0.3);
+  letter-spacing: 0.04em;
+}
+
+.pay-block.primary .pay-note { color: rgba(245,241,234,0.45); }
+
+.pay-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--ink-faint);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-mid);
+  letter-spacing: 0.06em;
+  background: var(--surface2);
+}
+
+.pay-chip::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--rust);
+  border-radius: 50%;
+}
+
+/* ── NEEDS ── */
+.needs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.need-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--ink-faint);
+  border-radius: var(--r-md);
+  background: var(--surface2);
+  transition: border-color 0.15s;
+}
+
+.need-item:hover { border-color: var(--rust-line); }
+
+.need-num {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--rust);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+  margin-top: 1px;
+  opacity: 0.7;
+}
+
+.need-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mid);
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+}
+
+/* ── CTA ── */
+.cta-card {
+  background: var(--ink);
+  border-radius: var(--r-xl);
+  padding: 56px 56px 52px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-card::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,82,42,0.18) 0%, transparent 65%);
+  top: -150px; left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.cta-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 15%; right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,82,42,0.4), transparent);
+}
+
+.cta-heading {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 300;
+  color: #F5F1EA;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.cta-heading em { font-style: italic; color: var(--rust); }
+
+.cta-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(245,241,234,0.35);
+  letter-spacing: 0.07em;
+  line-height: 1.9;
+  margin-bottom: 38px;
+  position: relative;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--rust);
+  color: #F5F1EA;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  position: relative;
+}
+
+.cta-btn:hover {
+  background: #d4612f;
+  box-shadow: 0 8px 32px rgba(196,82,42,0.45);
+  transform: translateY(-1px);
+}
+
+.cta-btn::after { content: '→'; }
+
+/* ── FOOTER ── */
+.footer-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 26px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  box-shadow: 0 2px 12px rgba(26,20,16,0.06);
+}
+
+.footer-brand { display: flex; align-items: center; gap: 8px; }
+
+.footer-dot {
+  width: 7px; height: 7px;
+  background: var(--rust);
+  border-radius: 50%;
+}
+
+.footer-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mid);
+}
+
+.footer-links { display: flex; gap: 22px; align-items: center; }
+
+.footer-links a,
+.footer-links span {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(26,20,16,0.3);
+  text-decoration: none;
+  letter-spacing: 0.07em;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover { color: var(--rust); }
+
+/* ── NOTE CHIP ── */
+.note-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(196,82,42,0.6);
+  letter-spacing: 0.06em;
+  padding: 9px 14px;
+  background: var(--rust-soft);
+  border-radius: 10px;
+  margin-top: 14px;
+  border: 1px solid var(--rust-line);
+}
+
+.note-chip::before { content: '→'; }
+
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  border-radius: 999px;
+  padding: 12px 20px 12px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 32px rgba(26,20,16,0.25);
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.bottom-bar p {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(245,241,234,0.3);
+  letter-spacing: 0.07em;
+}
+
+.bottom-btn {
+  background: var(--rust);
+  color: #F5F1EA;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.bottom-btn:hover { background: #d4612f; }
+
+/* ── FADE-IN ── */
+.card, .cta-card, .footer-card {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: up 0.5s ease forwards;
+}
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.12s; }
+.card:nth-child(3) { animation-delay: 0.19s; }
+.card:nth-child(4) { animation-delay: 0.26s; }
+.card:nth-child(5) { animation-delay: 0.33s; }
+.card:nth-child(6) { animation-delay: 0.40s; }
+.cta-card          { animation-delay: 0.47s; }
+.footer-card       { animation-delay: 0.52s; }
+
+@keyframes up {
+  to { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="card hero">
+    <div class="hero-blur"></div>
+    <div class="hero-top">
+      <div class="studio-mark">
+        <div class="mark-dot"></div>
+        <span class="studio-label">Zadan Studio</span>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-row">
+          <span class="meta-key">For</span>
+          <input class="meta-val" value="Client Name">
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">Biz</span>
+          <input class="meta-val" value="Business Name">
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">Date</span>
+          <input class="meta-val" value="May 2026">
+        </div>
+      </div>
+    </div>
+    <p class="hero-eyebrow">Website Proposal</p>
+    <h1>Built to bring<br><em>you business.</em></h1>
+    <p class="hero-sub">A precision-built website designed to convert visitors into paying clients — delivered in 7 days.</p>
+    <div class="pill-row" style="padding:0;margin-top:28px;">
+      <div class="pill">Valid 14 days</div>
+      <div class="pill">Awaiting acceptance</div>
+      <div class="pill">zadanstudio.com</div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="card sec">
+    <div class="sec-hd">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Overview</span>
+      <div class="sec-rule"></div>
+    </div>
+    <p class="intro-text" contenteditable="true">
+      Based on our conversation, <strong>Business Name</strong> needs a fast, professional website that builds trust and turns visitors into paying clients. Below is everything I'll build, what it costs, and how we get started today.
+    </p>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="card sec">
+    <div class="sec-hd">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Package</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="pkg-stack">
+
+      <div class="pkg" onclick="selectPkg(this, 375, 375)">
+        <div class="pkg-top">
+          <p class="pkg-name">Essential</p>
+          <span class="pkg-badge">5 Pages · 7 Days</span>
+        </div>
+        <div class="pkg-price-row">
+          <span class="pkg-cur">$</span>
+          <span class="pkg-price">750</span>
+        </div>
+        <p class="pkg-deposit">$375 deposit to start · $375 on launch</p>
+        <ul class="pkg-items">
+          <li>Home page</li>
+          <li>About page</li>
+          <li>Services page</li>
+          <li>Contact page</li>
+          <li>1 custom page</li>
+          <li>Mobile responsive</li>
+          <li>Contact form</li>
+          <li>Fast load speed</li>
+          <li>Domain + hosting setup</li>
+          <li>1 month Care Basic free</li>
+        </ul>
+      </div>
+
+      <div class="pkg" onclick="selectPkg(this, 600, 600)">
+        <div class="pkg-top">
+          <p class="pkg-name">Professional</p>
+          <span class="pkg-badge">8 Pages · 10 Days</span>
+        </div>
+        <div class="pkg-price-row">
+          <span class="pkg-cur">$</span>
+          <span class="pkg-price">1,200</span>
+        </div>
+        <p class="pkg-deposit">$600 deposit to start · $600 on launch</p>
+        <ul class="pkg-items">
+          <li>Everything in Essential</li>
+          <li>8 custom pages</li>
+          <li>SEO optimization</li>
+          <li>Analytics setup</li>
+          <li>Online booking</li>
+          <li>Google Business setup</li>
+          <li>Priority timeline</li>
+          <li>3 months Care Pro free</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="note-chip">Click a package above to select it and update the payment section</div>
+  </div>
+
+  <!-- CARE PLANS -->
+  <div class="card sec">
+    <div class="sec-hd">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Ongoing Care</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="care-grid">
+      <div class="care-card">
+        <p class="care-tag">Basic</p>
+        <p class="care-name">Care Basic</p>
+        <p class="care-price">$79<sub>/mo</sub></p>
+        <ul class="care-list">
+          <li>Hosting &amp; backups</li>
+          <li>Uptime monitoring</li>
+          <li>Security updates</li>
+        </ul>
+      </div>
+      <div class="care-card pro">
+        <p class="care-tag">Recommended</p>
+        <p class="care-name">Care Pro</p>
+        <p class="care-price">$149<sub>/mo</sub></p>
+        <ul class="care-list">
+          <li>Everything in Basic</li>
+          <li>2 hrs edits/month</li>
+          <li>Monthly Google Business post</li>
+          <li>Monthly ranking report</li>
+          <li>1 free page per quarter</li>
+          <li>Priority support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card sec">
+    <div class="sec-hd">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Timeline</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-dot lit"></div>
+        <p class="tl-day">Day 1</p>
+        <p class="tl-label">Deposit + contract signed</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <p class="tl-day">Day 2–3</p>
+        <p class="tl-label">Design draft shared</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <p class="tl-day">Day 5–6</p>
+        <p class="tl-label">Revisions applied</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <p class="tl-day">Day 7</p>
+        <p class="tl-label">Site goes live</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="card sec">
+    <div class="sec-hd">
+      <span class="sec-num">05</span>
+      <span class="sec-title">Payment</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="pay-grid">
+      <div class="pay-block primary">
+        <p class="pay-label">Due today to start</p>
+        <p class="pay-amount" id="deposit-amt">$—</p>
+        <p class="pay-note">50% deposit · via Stripe</p>
+      </div>
+      <div class="pay-block">
+        <p class="pay-label">Due on launch</p>
+        <p class="pay-amount" id="balance-amt">$—</p>
+        <p class="pay-note">Remaining 50% before handoff</p>
+      </div>
+    </div>
+    <div class="pay-chip">Processed securely via Stripe · No hidden fees</div>
+  </div>
+
+  <!-- WHAT I NEED -->
+  <div class="card sec">
+    <div class="sec-hd">
+      <span class="sec-num">06</span>
+      <span class="sec-title">What I Need From You</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="needs-grid">
+      <div class="need-item">
+        <span class="need-num">01</span>
+        <span class="need-text">Your logo — or let me know if you need one</span>
+      </div>
+      <div class="need-item">
+        <span class="need-num">02</span>
+        <span class="need-text">3–5 photos of your work, team, or space</span>
+      </div>
+      <div class="need-item">
+        <span class="need-num">03</span>
+        <span class="need-text">Short bio — what you do and who you serve</span>
+      </div>
+      <div class="need-item">
+        <span class="need-num">04</span>
+        <span class="need-text">Your preferred domain name (if you have one)</span>
+      </div>
+      <div class="need-item">
+        <span class="need-num">05</span>
+        <span class="need-text">2–3 sites you like the style of (optional)</span>
+      </div>
+      <div class="need-item">
+        <span class="need-num">06</span>
+        <span class="need-text">Your social media handles to link up</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-card">
+    <p class="cta-heading">Built to bring<br><em>you business.</em></p>
+    <p class="cta-sub">Reply to accept this proposal and I'll send the contract<br>and Stripe deposit link within the hour.</p>
+    <a class="cta-btn" href="mailto:your@email.com?subject=Accepting%20Proposal%20%E2%80%94%20Zadan%20Studio">Accept this proposal</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-card">
+    <div class="footer-brand">
+      <div class="footer-dot"></div>
+      <span class="footer-name">Zadan Studio</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://zadanstudio.com">zadanstudio.com</a>
+      <span contenteditable="true">your@email.com</span>
+      <span>Miami, FL</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar no-print">
+  <p>Click any field to edit · Select a package to update pricing</p>
+  <button class="bottom-btn" onclick="window.print()">Save as PDF</button>
+</div>
+
+<script>
+function selectPkg(el, dep, bal) {
+  document.querySelectorAll('.pkg').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('deposit-amt').textContent = '$' + dep.toLocaleString();
+  document.getElementById('balance-amt').textContent = '$' + bal.toLocaleString();
+  const chip = document.querySelector('.note-chip');
+  if (chip) chip.style.display = 'none';
+}
+</script>
+
+</body>
+</html>

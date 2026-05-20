@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadan Studio — Onboarding & Operations</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#F0EDE6; --surface:#FAFAF7; --s2:#F5F2EB; --s3:#eeeae1;
+  --rust:#C4522A; --rs:rgba(196,82,42,0.10); --rl:rgba(196,82,42,0.25);
+  --ink:#1A1410; --mid:#5a4d44; --faint:rgba(26,20,16,0.08); --ghost:rgba(26,20,16,0.04);
+  --green:#2e7d2e; --gs:rgba(46,125,46,0.09); --gl:rgba(46,125,46,0.25);
+  --blue:#1a73e8; --bs:rgba(26,115,232,0.08); --bl:rgba(26,115,232,0.2);
+  --serif:'Cormorant Garamond',Georgia,serif; --mono:'DM Mono',monospace;
+}
+body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-font-smoothing:antialiased; padding:40px 20px 100px; }
+.page { max-width:860px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+
+/* header */
+.hdr { background:var(--surface); border-radius:28px; padding:44px 52px 40px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(26,20,16,0.06); }
+.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(196,82,42,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
+.hdr-top { display:flex; align-items:center; gap:9px; margin-bottom:32px; }
+.dot { width:8px; height:8px; background:var(--rust); border-radius:50%; box-shadow:0 0 0 3px var(--rs); animation:breathe 3s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(196,82,42,0.05)} }
+.brand { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); }
+.hdr h1 { font-family:var(--serif); font-size:52px; font-weight:300; line-height:1; margin-bottom:10px; }
+.hdr h1 em { font-style:italic; color:var(--rust); }
+.hdr p { font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.05em; line-height:1.8; opacity:0.7; }
+.tabs { display:flex; gap:10px; flex-wrap:wrap; margin-top:28px; }
+.tab-btn { display:flex; align-items:center; gap:8px; padding:9px 18px; border-radius:999px; font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; border:1.5px solid var(--faint); background:var(--s2); color:var(--mid); cursor:pointer; transition:all 0.18s; white-space:nowrap; }
+.tab-btn.active,.tab-btn:hover { border-color:var(--rust); color:var(--rust); background:var(--rs); }
+.tbdot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+/* panels */
+.panel { display:none; flex-direction:column; gap:14px; }
+.panel.active { display:flex; }
+
+/* card */
+.card { background:var(--surface); border-radius:24px; overflow:hidden; box-shadow:0 2px 12px rgba(26,20,16,0.05); }
+.card-hd { display:flex; align-items:center; gap:14px; padding:22px 36px 20px; border-bottom:1px solid var(--faint); cursor:pointer; user-select:none; }
+.card-hd:hover { background:var(--ghost); }
+.card-icon { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.card-hd-text { flex:1; }
+.card-name { font-family:var(--serif); font-size:19px; font-weight:400; color:var(--ink); line-height:1; }
+.card-desc { font-family:var(--mono); font-size:10px; color:var(--mid); margin-top:3px; opacity:0.65; letter-spacing:0.04em; }
+.chevron { font-size:11px; color:var(--mid); opacity:0.4; transition:transform 0.2s; }
+.card.open .chevron { transform:rotate(90deg); }
+.card-body { display:none; padding:28px 36px 32px; }
+.card.open .card-body { display:block; }
+
+/* progress */
+.prog-wrap { margin-bottom:20px; }
+.prog-top { display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; color:var(--mid); margin-bottom:7px; }
+.prog-bar { height:5px; border-radius:999px; background:var(--faint); overflow:hidden; }
+.prog-fill { height:100%; border-radius:999px; background:var(--rust); transition:width 0.35s ease; }
+
+/* checklist */
+.cl { list-style:none; display:flex; flex-direction:column; gap:8px; }
+
+.cl-item {
+  display:flex; align-items:flex-start; gap:13px;
+  padding:14px 18px; border-radius:16px;
+  border:1.5px solid var(--faint); background:var(--s2);
+  cursor:pointer; transition:border-color 0.15s, background 0.15s;
+  user-select:none;
+}
+.cl-item:hover { border-color:var(--rl); }
+.cl-item.done { border-color:var(--gl); background:var(--gs); }
+
+.cl-box {
+  width:20px; height:20px; border-radius:7px;
+  border:1.5px solid var(--rl); background:transparent;
+  flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  font-size:11px; color:transparent; transition:all 0.15s; margin-top:1px;
+}
+.cl-item.done .cl-box { background:var(--green); border-color:var(--green); color:white; }
+
+.cl-content { flex:1; }
+.cl-title { font-family:var(--mono); font-size:12px; color:var(--ink); letter-spacing:0.02em; line-height:1.4; margin-bottom:3px; }
+.cl-item.done .cl-title { color:rgba(26,20,16,0.35); text-decoration:line-through; }
+.cl-sub { font-family:var(--mono); font-size:10px; color:var(--mid); line-height:1.6; opacity:0.7; letter-spacing:0.02em; }
+.cl-item.done .cl-sub { opacity:0.4; }
+
+.cl-tag {
+  font-family:var(--mono); font-size:9px; letter-spacing:0.1em; text-transform:uppercase;
+  padding:3px 9px; border-radius:999px; flex-shrink:0; white-space:nowrap; margin-top:2px;
+  align-self:flex-start;
+}
+.tag-you   { background:var(--rs); color:var(--rust); border:1px solid var(--rl); }
+.tag-them  { background:var(--bs); color:var(--blue); border:1px solid var(--bl); }
+.tag-both  { background:rgba(123,63,160,0.08); color:#7b3fa0; border:1px solid rgba(123,63,160,0.2); }
+.tag-auto  { background:var(--gs); color:var(--green); border:1px solid var(--gl); }
+
+/* section divider */
+.divlabel { font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(26,20,16,0.25); display:flex; align-items:center; gap:10px; padding:4px 0; margin:20px 0 12px; }
+.divlabel::before,.divlabel::after { content:''; flex:1; height:1px; background:var(--faint); }
+
+/* timeline */
+.tl { display:flex; flex-direction:column; gap:0; position:relative; }
+.tl::before { content:''; position:absolute; left:19px; top:24px; bottom:24px; width:1px; background:linear-gradient(to bottom, var(--rust), var(--rl) 70%, transparent); }
+
+.tl-step { display:flex; gap:20px; align-items:flex-start; padding:0 0 16px; position:relative; }
+.tl-step:last-child { padding-bottom:0; }
+
+.tl-dot-wrap { display:flex; flex-direction:column; align-items:center; flex-shrink:0; position:relative; z-index:1; }
+.tl-dot { width:40px; height:40px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; border:1.5px solid var(--faint); background:var(--surface); }
+.tl-dot.active { background:var(--rust); border-color:var(--rust); }
+
+.tl-content { flex:1; padding-top:8px; }
+.tl-day { font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--rust); margin-bottom:4px; }
+.tl-title { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--ink); margin-bottom:6px; line-height:1; }
+.tl-tasks { list-style:none; display:flex; flex-direction:column; gap:5px; }
+.tl-tasks li { font-family:var(--mono); font-size:11px; color:var(--mid); display:flex; align-items:flex-start; gap:8px; line-height:1.5; }
+.tl-tasks li::before { content:'→'; color:var(--rust); font-size:10px; flex-shrink:0; margin-top:1px; }
+
+/* care sop */
+.sop-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.sop-card { border:1.5px solid var(--faint); border-radius:18px; overflow:hidden; }
+.sop-hd { padding:16px 20px 14px; border-bottom:1px solid var(--faint); }
+.sop-plan { font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--rust); margin-bottom:4px; }
+.sop-name { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--ink); }
+.sop-price { font-family:var(--serif); font-size:16px; color:var(--mid); }
+.sop-tasks { list-style:none; padding:14px 20px; display:flex; flex-direction:column; gap:8px; }
+.sop-tasks li { font-family:var(--mono); font-size:11px; color:var(--mid); display:flex; align-items:flex-start; gap:8px; line-height:1.5; padding-bottom:8px; border-bottom:1px solid var(--faint); }
+.sop-tasks li:last-child { border-bottom:none; padding-bottom:0; }
+.sop-tasks li::before { content:'✓'; color:var(--rust); font-size:9px; flex-shrink:0; font-weight:600; margin-top:1px; }
+
+/* tip */
+.tip { background:var(--rs); border:1px solid var(--rl); border-radius:14px; padding:13px 18px; font-family:var(--mono); font-size:11px; color:var(--rust); line-height:1.7; margin-bottom:18px; }
+.tip::before { content:'💡 '; }
+
+/* legend */
+.legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+.legend-item { display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:9px; color:var(--mid); letter-spacing:0.06em; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-blur"></div>
+    <div class="hdr-top"><div class="dot"></div><span class="brand">Zadan Studio</span></div>
+    <h1>Operations &amp; <em>Onboarding</em></h1>
+    <p>Client onboarding checklist · Day-by-day project workflow · Care plan monthly SOP<br>Check off each item as you go — progress is saved per client.</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('onboarding',this)"><span class="tbdot" style="background:var(--rust)"></span>Onboarding Checklist</button>
+      <button class="tab-btn" onclick="showTab('workflow',this)"><span class="tbdot" style="background:#1a73e8"></span>Project Workflow</button>
+      <button class="tab-btn" onclick="showTab('care',this)"><span class="tbdot" style="background:var(--green)"></span>Care Plan SOP</button>
+    </div>
+  </div>
+
+  <!-- ══════════ ONBOARDING CHECKLIST ══════════ -->
+  <div class="panel active" id="panel-onboarding">
+
+    <!-- PHASE 1: CLOSE -->
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--rs)">🤝</div>
+        <div class="card-hd-text"><p class="card-name">Phase 1 — Close the Client</p><p class="card-desc">Before any work starts</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="prog-wrap">
+          <div class="prog-top"><span id="p1-label">0 of 5 done</span><span id="p1-pct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="p1-fill" style="width:0%"></div></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="cl-tag tag-you" style="margin:0">You</span> = your action</div>
+          <div class="legend-item"><span class="cl-tag tag-them" style="margin:0">Client</span> = their action</div>
+          <div class="legend-item"><span class="cl-tag tag-auto" style="margin:0">Auto</span> = happens automatically</div>
+        </div>
+        <ul class="cl" data-group="p1">
+          <li class="cl-item" onclick="toggleCl(this,'p1')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Send the proposal</p><p class="cl-sub">Open proposal template → fill in client name, business, package → save as PDF → email or DM it</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p1')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Client accepts the proposal</p><p class="cl-sub">Wait for a reply — follow up at 48hrs if no response</p></div>
+            <span class="cl-tag tag-them">Client</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p1')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Send Docuseal contract link</p><p class="cl-sub">Docuseal → Use template → fill in their name, package, price → enter their email → Send</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p1')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Client signs the contract</p><p class="cl-sub">Docuseal sends them an email — they sign online. You get a notification + PDF copy automatically.</p></div>
+            <span class="cl-tag tag-auto">Auto</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p1')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Send Stripe deposit link + confirm payment</p><p class="cl-sub">Send the correct deposit link (Essential $375 or Professional $600) — confirm payment lands in Stripe before starting</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PHASE 2: KICKOFF -->
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--bs)">🚀</div>
+        <div class="card-hd-text"><p class="card-name">Phase 2 — Kickoff</p><p class="card-desc">Day 1 — contract signed, deposit paid</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="prog-wrap">
+          <div class="prog-top"><span id="p2-label">0 of 6 done</span><span id="p2-pct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="p2-fill" style="width:0%"></div></div>
+        </div>
+        <ul class="cl" data-group="p2">
+          <li class="cl-item" onclick="toggleCl(this,'p2')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Create client folder in Google Drive</p><p class="cl-sub">Drive → 03 Clients → duplicate _Template folder → rename to client's business name</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p2')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Add client to Notion Client Tracker</p><p class="cl-sub">Name, business, package, status: In Progress, deposit paid: Yes, start date: today</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p2')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Send kickoff message</p><p class="cl-sub">"Awesome — we're locked in. I'll have a design draft to you by [Day 3]. In the meantime I need: your logo, 3–5 photos, a short bio, your domain name (if you have one)."</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p2')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Client sends assets</p><p class="cl-sub">Logo, photos, bio, domain, any sites they like. Chase within 24hrs if nothing arrives — timeline depends on this.</p></div>
+            <span class="cl-tag tag-them">Client</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p2')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Save all assets to client's Drive folder</p><p class="cl-sub">Drop logo + photos into their Assets subfolder so everything is in one place</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p2')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Confirm domain situation</p><p class="cl-sub">Do they have one? If yes — get login or transfer access. If no — register one (Namecheap or Google Domains, ~$12/yr)</p></div>
+            <span class="cl-tag tag-both">Both</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PHASE 3: BUILD -->
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(123,63,160,0.08)">🔨</div>
+        <div class="card-hd-text"><p class="card-name">Phase 3 — Build & Review</p><p class="card-desc">Days 2–6</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="prog-wrap">
+          <div class="prog-top"><span id="p3-label">0 of 6 done</span><span id="p3-pct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="p3-fill" style="width:0%"></div></div>
+        </div>
+        <ul class="cl" data-group="p3">
+          <li class="cl-item" onclick="toggleCl(this,'p3')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Build and send design draft</p><p class="cl-sub">Days 2–3. Share a preview link or screenshots. Message: "Here's the first draft — let me know what you'd like changed and I'll get it updated."</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p3')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Client reviews draft — Round 1</p><p class="cl-sub">They have 48hrs to send feedback. If no reply in 48hrs, follow up once.</p></div>
+            <span class="cl-tag tag-them">Client</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p3')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Apply Round 1 revisions</p><p class="cl-sub">Make all requested changes in one go. Send updated version with: "All updated — take a look and let me know if there's anything else."</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p3')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Client reviews — Round 2 (final)</p><p class="cl-sub">Remind them this is the 2nd and final revision round included in the package. Any further changes after this are $75/hr.</p></div>
+            <span class="cl-tag tag-them">Client</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p3')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Apply final revisions</p><p class="cl-sub">Days 5–6. Make changes, do a full check: mobile view, all links working, form submits correctly, load speed good.</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p3')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Client gives final approval</p><p class="cl-sub">"Does everything look good to go? Once you confirm I'll collect the balance and get it live."</p></div>
+            <span class="cl-tag tag-them">Client</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PHASE 4: LAUNCH -->
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--gs)">🎉</div>
+        <div class="card-hd-text"><p class="card-name">Phase 4 — Launch</p><p class="card-desc">Day 7 — go live</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="prog-wrap">
+          <div class="prog-top"><span id="p4-label">0 of 7 done</span><span id="p4-pct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="p4-fill" style="width:0%"></div></div>
+        </div>
+        <ul class="cl" data-group="p4">
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Collect the balance payment</p><p class="cl-sub">Send the Stripe balance link (Essential $375 or Professional $600) — do NOT launch until payment confirms</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Point domain to live site</p><p class="cl-sub">Update DNS settings — usually takes 10 min to 24hrs to fully propagate</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Final checks before announcing</p><p class="cl-sub">Mobile + desktop look good · All links work · Contact form submits and sends email · Page speed acceptable · No placeholder text anywhere</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Send launch email to client</p><p class="cl-sub">Use the launch day template from the Sales Kit — include the live URL, what to do next, and the Care plan details</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Set up Care plan subscription in Stripe</p><p class="cl-sub">If they're on Care Basic (1mo free) or Care Pro (3mo free) — set a reminder in your calendar for when the free period ends, then send the Stripe subscription link at that time</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Update Notion Client Tracker</p><p class="cl-sub">Status: Launched · Launch date: today · Care plan: Basic / Pro · Free period ends: [date]</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+          <li class="cl-item" onclick="toggleCl(this,'p4')">
+            <div class="cl-box">✓</div>
+            <div class="cl-content"><p class="cl-title">Add to portfolio</p><p class="cl-sub">Take a screenshot, note the niche and result, add to Notion → Website → Portfolio and to zadanstudio.com when you update the site</p></div>
+            <span class="cl-tag tag-you">You</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- end onboarding panel -->
+
+  <!-- ══════════ PROJECT WORKFLOW ══════════ -->
+  <div class="panel" id="panel-workflow">
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--bs)">📅</div>
+        <div class="card-hd-text"><p class="card-name">Day-by-Day Project Timeline</p><p class="card-desc">Essential (7 days) · Professional (10 days)</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="tip">Share this timeline with clients at kickoff so they know exactly what to expect and when. Sets the right expectations from day one.</div>
+        <div class="tl">
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot active">1</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Day 1 — Kickoff</p>
+              <p class="tl-title">Contract signed · Deposit paid · Assets requested</p>
+              <ul class="tl-tasks">
+                <li>Send kickoff message with asset checklist</li>
+                <li>Create Google Drive client folder</li>
+                <li>Add client to Notion tracker</li>
+                <li>Confirm domain situation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot">2</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Day 2 — Build starts</p>
+              <p class="tl-title">Design & development</p>
+              <ul class="tl-tasks">
+                <li>Build home page and core layout</li>
+                <li>Apply brand colors, fonts, tone from their assets</li>
+                <li>Build remaining pages</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot">3</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Day 3 — Draft delivery</p>
+              <p class="tl-title">First draft sent to client</p>
+              <ul class="tl-tasks">
+                <li>Share preview link or screenshots</li>
+                <li>Ask for feedback — remind them to send all changes in one list</li>
+                <li>Client has 48hrs to respond</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot">4</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Day 4 — Revisions</p>
+              <p class="tl-title">Round 1 changes applied</p>
+              <ul class="tl-tasks">
+                <li>Apply all Round 1 feedback in one pass</li>
+                <li>Send updated version, request final round of feedback</li>
+                <li>Note: this is the 2nd and final included revision round</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot">5</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Days 5–6 — Final polish</p>
+              <p class="tl-title">Final revisions · QA checks</p>
+              <ul class="tl-tasks">
+                <li>Apply Round 2 feedback</li>
+                <li>Check mobile + desktop on multiple screen sizes</li>
+                <li>Test contact form, all links, load speed</li>
+                <li>Remove any placeholder text or test content</li>
+                <li>Get final written approval from client</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--rust);border-color:var(--rust);font-size:12px">🚀</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Day 7 — Launch</p>
+              <p class="tl-title">Balance collected · Site goes live</p>
+              <ul class="tl-tasks">
+                <li>Collect 50% balance via Stripe — confirm payment</li>
+                <li>Point domain to live site</li>
+                <li>Final live checks</li>
+                <li>Send launch email with next steps + Care plan info</li>
+                <li>Update Notion tracker · Set Care plan reminder</li>
+                <li>Add to portfolio</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <div class="tl-dot-wrap"><div class="tl-dot" style="font-size:11px">Pro</div></div>
+            <div class="tl-content">
+              <p class="tl-day">Days 8–10 — Professional only</p>
+              <p class="tl-title">SEO · Booking · Google Business</p>
+              <ul class="tl-tasks">
+                <li>Set up and optimize Google Business profile</li>
+                <li>Install and configure analytics</li>
+                <li>Set up online booking integration</li>
+                <li>SEO meta titles, descriptions, and image alt tags</li>
+                <li>Submit sitemap to Google Search Console</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div><!-- end workflow panel -->
+
+  <!-- ══════════ CARE PLAN SOP ══════════ -->
+  <div class="panel" id="panel-care">
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--gs)">🔁</div>
+        <div class="card-hd-text"><p class="card-name">Monthly Care Plan SOP</p><p class="card-desc">What you do every month for Basic and Pro clients</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="tip">Block 2–3 hours on the first of every month and run through every Care client in a row. Basic clients take about 10 minutes each. Pro clients take 30–45 minutes each.</div>
+        <div class="sop-grid">
+          <div class="sop-card">
+            <div class="sop-hd">
+              <p class="sop-plan">Every month</p>
+              <p class="sop-name">Care Basic</p>
+              <p class="sop-price">$79/mo · ~10 min per client</p>
+            </div>
+            <ul class="sop-tasks">
+              <li>Confirm hosting is active and site is live</li>
+              <li>Check uptime monitor — no outages this month</li>
+              <li>Confirm daily backups are running</li>
+              <li>Apply any pending security or plugin updates</li>
+              <li>Check site load speed — flag if over 3 seconds</li>
+              <li>Send brief check-in: "All good this month — site is running great."</li>
+            </ul>
+          </div>
+          <div class="sop-card" style="border-color:var(--rl)">
+            <div class="sop-hd" style="background:rgba(196,82,42,0.04)">
+              <p class="sop-plan">Every month</p>
+              <p class="sop-name">Care Pro</p>
+              <p class="sop-price">$149/mo · ~45 min per client</p>
+            </div>
+            <ul class="sop-tasks">
+              <li>Everything in Care Basic</li>
+              <li>Check keyword rankings — note any movement up or down</li>
+              <li>Write and publish monthly Google Business post</li>
+              <li>Apply any edit requests from the client (up to 2hrs)</li>
+              <li>Pull traffic and performance data from analytics</li>
+              <li>Write monthly report: rankings, speed, traffic, uptime, edits done</li>
+              <li>Email report to client using the monthly check-in template</li>
+              <li>Note remaining edit time for the month</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="divlabel" style="margin-top:24px">Care plan reminders to set in your calendar</div>
+        <ul class="cl" style="gap:8px">
+          <li class="cl-item" style="cursor:default">
+            <div class="cl-content"><p class="cl-title">1st of every month — run Care SOP for all clients</p><p class="cl-sub">Block 2–3 hours. Go through every client one by one.</p></div>
+            <span class="cl-tag tag-you">Monthly</span>
+          </li>
+          <li class="cl-item" style="cursor:default">
+            <div class="cl-content"><p class="cl-title">5 days before each client's free period ends — send upgrade email</p><p class="cl-sub">Essential clients: 1 month free Care Basic. Professional clients: 3 months free Care Pro. Use the Care upsell template.</p></div>
+            <span class="cl-tag tag-you">Per client</span>
+          </li>
+          <li class="cl-item" style="cursor:default">
+            <div class="cl-content"><p class="cl-title">Quarterly — offer the free page to Care Pro clients</p><p class="cl-sub">Message: "Your quarterly free page is available — want to add anything? New service, team page, landing page?"</p></div>
+            <span class="cl-tag tag-you">Quarterly</span>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div><!-- end care panel -->
+
+</div><!-- end page -->
+
+<!-- BOTTOM BAR -->
+<div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);border-radius:999px;padding:12px 24px;display:flex;align-items:center;gap:16px;box-shadow:0 8px 32px rgba(26,20,16,0.2);z-index:100;white-space:nowrap;">
+  <p style="font-family:var(--mono);font-size:10px;color:rgba(245,241,234,0.3);letter-spacing:0.07em">Check off each item as you go</p>
+  <button style="background:var(--rust);color:#F5F1EA;font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:9px 20px;border:none;border-radius:999px;cursor:pointer;" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleCard(hd) { hd.parentElement.classList.toggle('open'); }
+
+function toggleCl(el, group) {
+  el.classList.toggle('done');
+  updateProg(group);
+}
+
+function updateProg(group) {
+  const all  = document.querySelectorAll(`[data-group="${group}"] .cl-item`);
+  const done = document.querySelectorAll(`[data-group="${group}"] .cl-item.done`);
+  const pct  = all.length ? Math.round((done.length / all.length) * 100) : 0;
+  const fill = document.getElementById(group + '-fill');
+  const lbl  = document.getElementById(group + '-label');
+  const pctEl = document.getElementById(group + '-pct');
+  if (fill)  fill.style.width  = pct + '%';
+  if (lbl)   lbl.textContent   = done.length + ' of ' + all.length + ' done';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zadan Studio — Sales Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#F0EDE6; --surface:#FAFAF7; --s2:#F5F2EB; --s3:#eeeae1;
+  --rust:#C4522A; --rs:rgba(196,82,42,0.10); --rl:rgba(196,82,42,0.25);
+  --ink:#1A1410; --mid:#5a4d44; --faint:rgba(26,20,16,0.08); --ghost:rgba(26,20,16,0.04);
+  --green:#2e7d2e; --gs:rgba(46,125,46,0.10); --gl:rgba(46,125,46,0.25);
+  --blue:#1a73e8; --bs:rgba(26,115,232,0.08); --bl:rgba(26,115,232,0.2);
+  --serif:'Cormorant Garamond',Georgia,serif; --mono:'DM Mono',monospace;
+}
+body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-font-smoothing:antialiased; padding:40px 20px 100px; }
+.page { max-width:860px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+
+/* header */
+.hdr { background:var(--surface); border-radius:28px; padding:44px 52px 40px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(26,20,16,0.06); }
+.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(196,82,42,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
+.hdr-top { display:flex; align-items:center; gap:9px; margin-bottom:32px; }
+.dot { width:8px; height:8px; background:var(--rust); border-radius:50%; box-shadow:0 0 0 3px var(--rs); animation:breathe 3s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(196,82,42,0.05)} }
+.brand { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); }
+.hdr h1 { font-family:var(--serif); font-size:52px; font-weight:300; line-height:1; margin-bottom:10px; }
+.hdr h1 em { font-style:italic; color:var(--rust); }
+.hdr p { font-family:var(--mono); font-size:11px; color:var(--mid); letter-spacing:0.05em; line-height:1.8; opacity:0.7; }
+.tabs { display:flex; gap:10px; flex-wrap:wrap; margin-top:28px; }
+.tab-btn { display:flex; align-items:center; gap:8px; padding:9px 18px; border-radius:999px; font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; border:1.5px solid var(--faint); background:var(--s2); color:var(--mid); cursor:pointer; transition:all 0.18s; white-space:nowrap; }
+.tab-btn.active,.tab-btn:hover { border-color:var(--rust); color:var(--rust); background:var(--rs); }
+.tbdot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+/* panels */
+.panel { display:none; flex-direction:column; gap:14px; }
+.panel.active { display:flex; }
+
+/* card */
+.card { background:var(--surface); border-radius:24px; overflow:hidden; box-shadow:0 2px 12px rgba(26,20,16,0.05); }
+.card-hd { display:flex; align-items:center; gap:14px; padding:22px 36px 20px; border-bottom:1px solid var(--faint); cursor:pointer; user-select:none; }
+.card-hd:hover { background:var(--ghost); }
+.card-icon { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.card-hd-text { flex:1; }
+.card-name { font-family:var(--serif); font-size:19px; font-weight:400; color:var(--ink); line-height:1; }
+.card-desc { font-family:var(--mono); font-size:10px; color:var(--mid); margin-top:3px; opacity:0.65; letter-spacing:0.04em; }
+.chevron { font-size:11px; color:var(--mid); opacity:0.4; transition:transform 0.2s; }
+.card.open .chevron { transform:rotate(90deg); }
+.card-body { display:none; padding:28px 36px 32px; }
+.card.open .card-body { display:block; }
+
+/* script blocks */
+.script-block { margin-bottom:28px; }
+.script-block:last-child { margin-bottom:0; }
+
+.phase-label {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--rust); background:var(--rs); border:1px solid var(--rl);
+  padding:4px 12px; border-radius:999px; margin-bottom:12px;
+}
+
+.phase-label.green { color:var(--green); background:var(--gs); border-color:var(--gl); }
+.phase-label.blue  { color:var(--blue);  background:var(--bs); border-color:var(--bl); }
+.phase-label.ink   { color:var(--mid);   background:var(--faint); border-color:rgba(26,20,16,0.15); }
+
+.script-title { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--ink); margin-bottom:8px; }
+.script-note  { font-family:var(--mono); font-size:10px; color:var(--mid); letter-spacing:0.04em; line-height:1.7; margin-bottom:14px; opacity:0.7; }
+
+/* speech bubble */
+.bubble {
+  background:var(--s2); border:1.5px solid var(--faint);
+  border-left:3px solid var(--rust);
+  border-radius:0 14px 14px 0;
+  padding:16px 20px; margin-bottom:10px;
+  font-family:var(--mono); font-size:12px; color:var(--ink); line-height:1.8; letter-spacing:0.02em;
+  position:relative;
+}
+.bubble.alt { border-left-color:var(--mid); background:var(--ghost); }
+.bubble.green-b { border-left-color:var(--green); }
+.bubble-label { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--rust); margin-bottom:6px; opacity:0.7; }
+.bubble.alt .bubble-label { color:var(--mid); }
+.bubble.green-b .bubble-label { color:var(--green); }
+
+/* copy button */
+.copy-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--mid); background:var(--s3); border:1.5px solid var(--faint);
+  padding:5px 12px; border-radius:999px; cursor:pointer; transition:all 0.15s;
+  margin-top:4px;
+}
+.copy-btn:hover { border-color:var(--rl); color:var(--rust); background:var(--rs); }
+.copy-btn.copied { color:var(--green); border-color:var(--gl); background:var(--gs); }
+
+/* email block */
+.email-wrap { border:1.5px solid var(--faint); border-radius:18px; overflow:hidden; margin-bottom:20px; }
+.email-wrap:last-child { margin-bottom:0; }
+.email-meta { background:var(--s2); padding:14px 20px; border-bottom:1px solid var(--faint); }
+.email-field { display:flex; gap:10px; align-items:flex-start; margin-bottom:6px; }
+.email-field:last-child { margin-bottom:0; }
+.email-key { font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(26,20,16,0.3); width:52px; flex-shrink:0; padding-top:1px; }
+.email-val { font-family:var(--mono); font-size:11px; color:var(--ink); line-height:1.5; }
+.email-body { padding:20px; background:var(--surface); }
+.email-body pre { font-family:var(--mono); font-size:11px; color:var(--ink); line-height:1.9; white-space:pre-wrap; letter-spacing:0.02em; }
+.email-footer { background:var(--s2); padding:10px 20px; border-top:1px solid var(--faint); display:flex; justify-content:space-between; align-items:center; }
+.email-tag { font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:3px 10px; border-radius:999px; }
+
+/* contract */
+.contract-doc {
+  border:1.5px solid var(--faint); border-radius:18px; overflow:hidden;
+}
+.contract-header { background:var(--ink); padding:32px 36px; }
+.contract-header h2 { font-family:var(--serif); font-size:28px; font-weight:300; color:#F5F1EA; margin-bottom:4px; }
+.contract-header p { font-family:var(--mono); font-size:10px; color:rgba(245,241,234,0.4); letter-spacing:0.1em; }
+.contract-section { padding:24px 36px; border-bottom:1px solid var(--faint); }
+.contract-section:last-child { border-bottom:none; }
+.contract-sec-title { font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--rust); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.contract-sec-title::after { content:''; flex:1; height:1px; background:var(--faint); }
+.contract-text { font-family:var(--mono); font-size:11px; color:var(--mid); line-height:1.9; letter-spacing:0.02em; }
+.contract-text strong { color:var(--ink); font-weight:400; }
+.contract-blank { display:inline-block; min-width:160px; border-bottom:1px solid var(--rl); color:var(--rust); font-style:italic; }
+.sig-row { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:16px; }
+.sig-block { border-top:1px solid var(--faint); padding-top:12px; }
+.sig-label { font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(26,20,16,0.3); margin-bottom:4px; }
+.sig-name { font-family:var(--serif); font-size:15px; color:var(--ink); font-weight:400; }
+.sig-line { height:40px; border-bottom:1px solid var(--faint); margin-bottom:6px; }
+
+/* tip box */
+.tip { background:var(--rs); border:1px solid var(--rl); border-radius:14px; padding:14px 18px; font-family:var(--mono); font-size:11px; color:var(--rust); line-height:1.7; margin-bottom:20px; }
+.tip::before { content:'💡 '; }
+
+/* objection row */
+.obj-row { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.obj-card { border:1.5px solid var(--faint); border-radius:14px; overflow:hidden; }
+.obj-q { background:var(--s2); padding:12px 18px; font-family:var(--mono); font-size:11px; color:var(--ink); letter-spacing:0.02em; border-bottom:1px solid var(--faint); }
+.obj-q::before { content:'"'; color:var(--rust); }
+.obj-q::after  { content:'"'; color:var(--rust); }
+.obj-a { padding:12px 18px; font-family:var(--mono); font-size:11px; color:var(--mid); line-height:1.7; letter-spacing:0.02em; }
+.obj-a::before { content:'→ '; color:var(--rust); }
+
+/* divider */
+.divlabel { font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(26,20,16,0.25); display:flex; align-items:center; gap:10px; padding:4px 0; margin:20px 0 14px; }
+.divlabel::before,.divlabel::after { content:''; flex:1; height:1px; background:var(--faint); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-blur"></div>
+    <div class="hdr-top"><div class="dot"></div><span class="brand">Zadan Studio</span></div>
+    <h1>Sales <em>Kit</em></h1>
+    <p>Discovery call script · Email & DM templates · Service contract<br>Edit anything in red brackets before using.</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('call',this)"><span class="tbdot" style="background:#C4522A"></span>Call Script</button>
+      <button class="tab-btn" onclick="showTab('outreach',this)"><span class="tbdot" style="background:#1a73e8"></span>Cold Outreach</button>
+      <button class="tab-btn" onclick="showTab('followup',this)"><span class="tbdot" style="background:#7b3fa0"></span>Follow-ups</button>
+      <button class="tab-btn" onclick="showTab('upsell',this)"><span class="tbdot" style="background:#2e7d2e"></span>Care Upsell</button>
+      <button class="tab-btn" onclick="showTab('contract',this)"><span class="tbdot" style="background:#1A1410"></span>Contract</button>
+    </div>
+  </div>
+
+  <!-- ══════════ CALL SCRIPT ══════════ -->
+  <div class="panel active" id="panel-call">
+
+    <!-- INTRO -->
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--rs)">📞</div>
+        <div class="card-hd-text"><p class="card-name">Discovery Call — Full Script</p><p class="card-desc">20 minutes · works for Zoom, phone, or in-person coffee</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+
+        <div class="tip">This isn't a sales pitch — it's a conversation. Your job is to listen, understand their problem, and then show them you can solve it. Talk less than they do in the first half.</div>
+
+        <!-- PHASE 1 -->
+        <div class="script-block">
+          <span class="phase-label">Phase 1 — Opener (2 min)</span>
+          <p class="script-title">Warm up, set the tone</p>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Hey [Name], thanks for taking the time — I'll keep this to about 20 minutes. I just want to learn a bit about your business and see if I can actually help. Sound good?
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Tell me about what you do — like give me the version you'd tell someone at a dinner party, not the formal pitch.
+          </div>
+          <p class="script-note">→ Let them talk. Take notes. Don't interrupt. This tells you everything about how to position your pitch.</p>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="script-block">
+          <span class="phase-label">Phase 2 — Dig in (8 min)</span>
+          <p class="script-title">Find the pain, understand the gap</p>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Do you have a website right now? What does it look like?
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            When someone Googles you or asks for your site — what happens? Do you feel good sending people there?
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Where are most of your clients coming from right now — word of mouth, social media, search?
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            What's your biggest frustration with how you're showing up online right now?
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            If your website was doing its job perfectly — what would that look like for you? More calls? More bookings? More trust when people look you up?
+          </div>
+          <p class="script-note">→ The last question is the most important. Their answer is literally what your proposal will say you're going to deliver.</p>
+        </div>
+
+        <!-- PHASE 3 -->
+        <div class="script-block">
+          <span class="phase-label">Phase 3 — The pitch (5 min)</span>
+          <p class="script-title">Position what you do, match it to their pain</p>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Here's what I do — I build custom websites for businesses like yours in about 7 days. Not templates, not DIY builders. A real site designed to look professional and actually bring in clients.
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Based on what you just told me, it sounds like what you need is [repeat back their answer from the last question]. That's exactly what I'd build for you.
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            I have two packages. The Essential — 5 pages, done in 7 days, $750. Or the Professional — 8 pages, SEO, booking system, Google Business setup, $1,200. From what you've described, I'd probably recommend [package] because [reason from their answers].
+          </div>
+          <p class="script-note">→ Always recommend one. Don't make them choose without guidance — it creates hesitation.</p>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="script-block">
+          <span class="phase-label">Phase 4 — Close (5 min)</span>
+          <p class="script-title">Handle questions, get a yes or a next step</p>
+          <div class="bubble">
+            <p class="bubble-label">You say</p>
+            Does that sound like what you're looking for? Any questions about what's included?
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say — if they seem ready</p>
+            Awesome. What I'll do is send you a proposal today with everything written out, and a contract and deposit link. Once the deposit is in I can start within 24 hours — and you'd have a live site in 7 days.
+          </div>
+          <div class="bubble">
+            <p class="bubble-label">You say — if they need to think</p>
+            Totally fine. I'll send the proposal over and you can look it over. The only thing I'd say is I can only take on [X] clients at a time, so if you want to lock in the timeline it's worth moving soon. No pressure though — what's a good timeframe for you?
+          </div>
+        </div>
+
+        <!-- OBJECTIONS -->
+        <div class="divlabel">Common objections</div>
+        <div class="obj-row">
+          <div class="obj-card">
+            <p class="obj-q">I already have a website</p>
+            <p class="obj-a">That's fine — can I take a quick look? A lot of the sites I end up rebuilding were technically "there" but weren't doing anything for the business. If yours is working great, I'll tell you honestly. If not, I can show you exactly what I'd change.</p>
+          </div>
+          <div class="obj-card">
+            <p class="obj-q">That's more than I expected to spend</p>
+            <p class="obj-a">I get it. If a site brings in even one or two extra clients a month, it pays for itself in 30 days. But I also have the Essential package at $750 — same quality, just fewer pages. That might be the right starting point.</p>
+          </div>
+          <div class="obj-card">
+            <p class="obj-q">Can I think about it?</p>
+            <p class="obj-a">Of course. I'll send the proposal over so you have everything in writing. What's your timeline looking like — are you trying to get this done in the next few weeks or is it more of a someday thing?</p>
+          </div>
+          <div class="obj-card">
+            <p class="obj-q">Can you do it cheaper?</p>
+            <p class="obj-a">The pricing is set — I keep it fixed because it's what lets me deliver a quality product on a fast timeline. What I can do is make sure you're on the right package so you're not paying for things you don't need.</p>
+          </div>
+          <div class="obj-card">
+            <p class="obj-q">How do I know it'll look good?</p>
+            <p class="obj-a">Fair question — let me send you a few examples right now. [share cybersecurityreach.org, unitedworldleaders.org, Brickell Law Group]. These are real sites I've built. If you like the style, we're a good fit.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- IN PERSON CHEAT SHEET -->
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--rs)">🤝</div>
+        <div class="card-hd-text"><p class="card-name">In-Person Cheat Sheet</p><p class="card-desc">When you run into someone — networking, coffee, referral</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="tip">You have 60 seconds. Don't pitch — just ask questions and plant a seed. The goal is a follow-up, not a sale on the spot.</div>
+        <div class="script-block">
+          <span class="phase-label">The one-liner</span>
+          <div class="bubble">
+            <p class="bubble-label">When someone asks what you do</p>
+            I build websites for small businesses in Miami — ones that actually bring in clients, not just look pretty. I do it in about a week.
+          </div>
+        </div>
+        <div class="script-block">
+          <span class="phase-label">The follow-up question</span>
+          <div class="bubble">
+            <p class="bubble-label">Immediately after</p>
+            What do you do? Do you have a site?
+          </div>
+          <p class="script-note">→ If they say no, or they say yes but seem hesitant: "I'd love to take a look sometime — I can usually spot pretty quickly what's costing someone business." Then exchange contacts.</p>
+        </div>
+        <div class="script-block">
+          <span class="phase-label">The next step</span>
+          <div class="bubble">
+            <p class="bubble-label">Before you part ways</p>
+            I'll send you a couple examples of sites I've done — just so you have something to look at. What's the best way to reach you, text or Instagram?
+          </div>
+          <p class="script-note">→ Get their number or handle. Follow up within 2 hours while you're still fresh in their mind.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end call panel -->
+
+  <!-- ══════════ COLD OUTREACH ══════════ -->
+  <div class="panel" id="panel-outreach">
+
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--bs)">💬</div>
+        <div class="card-hd-text"><p class="card-name">Cold DM — Instagram / LinkedIn</p><p class="card-desc">Short, direct, not salesy — opens a conversation</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="tip">Keep it under 3 sentences. No pitching in the first message. You're opening a door, not closing a deal.</div>
+
+        <div class="divlabel">Version A — Business with no website</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">To</span><span class="email-val">[Business owner — found via Google Maps, Instagram, LinkedIn]</span></div>
+            <div class="email-field"><span class="email-key">Via</span><span class="email-val">Instagram DM or LinkedIn message</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name] — came across [Business Name] and noticed you don't have a website yet.
+
+I build custom sites for Miami businesses in about a week — designed to actually bring in clients.
+
+Would it be worth a quick 15-minute call to see if I can help?</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--bs);color:var(--blue);border:1px solid var(--bl)">Cold — no website</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name] — came across [Business Name] and noticed you don\'t have a website yet.\n\nI build custom sites for Miami businesses in about a week — designed to actually bring in clients.\n\nWould it be worth a quick 15-minute call to see if I can help?')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">Version B — Business with a weak website</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">To</span><span class="email-val">[Business with outdated or low-quality site]</span></div>
+            <div class="email-field"><span class="email-key">Via</span><span class="email-val">Instagram DM or LinkedIn message</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name] — I checked out [businessname.com] and I think there's a real opportunity to make it work harder for you.
+
+I build custom websites for Miami businesses — focused on converting visitors into actual clients.
+
+Open to a quick call this week?</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--bs);color:var(--blue);border:1px solid var(--bl)">Cold — weak site</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name] — I checked out [businessname.com] and I think there\'s a real opportunity to make it work harder for you.\n\nI build custom websites for Miami businesses — focused on converting visitors into actual clients.\n\nOpen to a quick call this week?')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">Version C — LinkedIn (slightly more formal)</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">To</span><span class="email-key">Professional or business owner on LinkedIn</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hi [Name] — I run Zadan Studio, a Miami-based web design agency.
+
+I noticed [Business Name] and thought your online presence could be doing more for you. I build custom sites in 7 days, focused on turning visitors into clients.
+
+Worth a 15-minute call to explore?</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--bs);color:var(--blue);border:1px solid var(--bl)">LinkedIn</span>
+            <button class="copy-btn" onclick="copyText(this,'Hi [Name] — I run Zadan Studio, a Miami-based web design agency.\n\nI noticed [Business Name] and thought your online presence could be doing more for you. I build custom sites in 7 days, focused on turning visitors into clients.\n\nWorth a 15-minute call to explore?')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">Version D — Email cold outreach</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Quick question about [Business Name]'s website</span></div>
+            <div class="email-field"><span class="email-key">To</span><span class="email-val">[Business owner email]</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hi [Name],
+
+I came across [Business Name] while looking at [niche] businesses in Miami.
+
+I run Zadan Studio — we build custom websites for local businesses in about 7 days. Sites designed to build trust and bring in clients, not just exist online.
+
+I took a quick look at your current site and think there's a real opportunity to make it work a lot harder for you. Worth a 15-minute call this week?
+
+— [Your name]
+zadanstudio.com</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--bs);color:var(--blue);border:1px solid var(--bl)">Email</span>
+            <button class="copy-btn" onclick="copyText(this,'Hi [Name],\n\nI came across [Business Name] while looking at [niche] businesses in Miami.\n\nI run Zadan Studio — we build custom websites for local businesses in about 7 days. Sites designed to build trust and bring in clients, not just exist online.\n\nI took a quick look at your current site and think there\'s a real opportunity to make it work a lot harder for you. Worth a 15-minute call this week?\n\n— [Your name]\nzadanstudio.com')">Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end outreach panel -->
+
+  <!-- ══════════ FOLLOW-UPS ══════════ -->
+  <div class="panel" id="panel-followup">
+
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(123,63,160,0.08)">🔁</div>
+        <div class="card-hd-text"><p class="card-name">Follow-Up Templates</p><p class="card-desc">After the call, after the proposal, after silence</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+
+        <div class="divlabel">After the discovery call — send same day</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Your proposal — Zadan Studio</span></div>
+            <div class="email-field"><span class="email-key">When</span><span class="email-val">Within 2 hours of the call</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hi [Name],
+
+Great talking with you today. Based on what you shared about [their main pain point], here's the proposal I'd recommend.
+
+[ATTACH PROPOSAL PDF]
+
+The short version:
+— [Package name] · $[price]
+— Live in [X] days
+— [1 key feature relevant to their problem]
+
+To move forward: sign the contract and pay the deposit — I'll start within 24 hours.
+
+Any questions, just reply here. Happy to jump on a quick call too if it's easier.
+
+— [Your name]
+zadanstudio.com</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:rgba(123,63,160,0.08);color:#7b3fa0;border:1px solid rgba(123,63,160,0.2)">Post-call</span>
+            <button class="copy-btn" onclick="copyText(this, 'Hi [Name],\n\nGreat talking with you today. Based on what you shared about [their main pain point], here\'s the proposal I\'d recommend.\n\n[ATTACH PROPOSAL PDF]\n\nThe short version:\n— [Package name] · $[price]\n— Live in [X] days\n— [1 key feature relevant to their problem]\n\nTo move forward: sign the contract and pay the deposit — I\'ll start within 24 hours.\n\nAny questions, just reply here. Happy to jump on a quick call too if it\'s easier.\n\n— [Your name]\nzadanstudio.com')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">48-hour no reply nudge</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Re: Your proposal — Zadan Studio</span></div>
+            <div class="email-field"><span class="email-key">When</span><span class="email-val">48 hours after sending proposal — no response</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name] — just checking in on the proposal I sent over.
+
+No pressure at all — just want to make sure it didn't get buried. Happy to answer any questions or adjust anything if needed.
+
+Worth moving forward?</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:rgba(123,63,160,0.08);color:#7b3fa0;border:1px solid rgba(123,63,160,0.2)">48hr nudge</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name] — just checking in on the proposal I sent over.\n\nNo pressure at all — just want to make sure it didn\'t get buried. Happy to answer any questions or adjust anything if needed.\n\nWorth moving forward?')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">5-day final follow-up</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Closing out your proposal</span></div>
+            <div class="email-field"><span class="email-key">When</span><span class="email-val">5 days after sending proposal — still no response</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hi [Name],
+
+I'll keep this short — I'm closing out proposals this week and wanted to give you a heads up before I do.
+
+If the timing isn't right, totally fine. If you're still interested, I can hold a spot for you — just let me know either way.
+
+— [Your name]</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:rgba(123,63,160,0.08);color:#7b3fa0;border:1px solid rgba(123,63,160,0.2)">Final nudge</span>
+            <button class="copy-btn" onclick="copyText(this,'Hi [Name],\n\nI\'ll keep this short — I\'m closing out proposals this week and wanted to give you a heads up before I do.\n\nIf the timing isn\'t right, totally fine. If you\'re still interested, I can hold a spot for you — just let me know either way.\n\n— [Your name]')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">After in-person meeting — same day text</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Via</span><span class="email-val">Text message — within 2 hours of meeting</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name] — great meeting you today. Here are a couple sites I've built so you can get a feel for my work: cybersecurityreach.org and unitedworldleaders.org. Happy to put together something for [their business] — just say the word.</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:rgba(123,63,160,0.08);color:#7b3fa0;border:1px solid rgba(123,63,160,0.2)">Text</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name] — great meeting you today. Here are a couple sites I\'ve built so you can get a feel for my work: cybersecurityreach.org and unitedworldleaders.org. Happy to put together something for [their business] — just say the word.')">Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end followup panel -->
+
+  <!-- ══════════ CARE UPSELL ══════════ -->
+  <div class="panel" id="panel-upsell">
+
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:var(--gs)">💰</div>
+        <div class="card-hd-text"><p class="card-name">Care Plan Upsell Sequence</p><p class="card-desc">Convert project clients to monthly recurring revenue</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="tip">The best time to sell the Care plan is right after launch — they're excited, the site looks great, and they don't want anything to go wrong. Make it feel like protection, not a subscription.</div>
+
+        <div class="divlabel">Launch day email — sent when site goes live</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">🚀 Your site is live — [Business Name]</span></div>
+            <div class="email-field"><span class="email-key">When</span><span class="email-val">The moment the site launches</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name],
+
+Your site is live — [website URL].
+
+It's been a pleasure building this for you. Here's what to do right now:
+— Share it on your Instagram and Facebook today
+— Send the link to your best 5 clients and ask them what they think
+— Add it to your email signature and Google Business profile
+
+One more thing: now that the site is live, I want to make sure it stays fast, secure, and keeps working for you. That's what the Care plan is for.
+
+[Package they're getting] includes [X months] free — after that it's $[price]/mo and I handle everything: hosting, backups, security, and [edits if Pro].
+
+I'll send the Stripe subscription link when your free period ends. Any questions, I'm here.
+
+Congrats — you've got a site that's built to bring you business.
+
+— [Your name]
+zadanstudio.com</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--gs);color:var(--green);border:1px solid var(--gl)">Launch day</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name],\n\nYour site is live — [website URL].\n\nIt\'s been a pleasure building this for you. Here\'s what to do right now:\n— Share it on your Instagram and Facebook today\n— Send the link to your best 5 clients and ask them what they think\n— Add it to your email signature and Google Business profile\n\nOne more thing: now that the site is live, I want to make sure it stays fast, secure, and keeps working for you. That\'s what the Care plan is for.\n\n[Package they\'re getting] includes [X months] free — after that it\'s $[price]/mo and I handle everything: hosting, backups, security, and [edits if Pro].\n\nI\'ll send the Stripe subscription link when your free period ends. Any questions, I\'m here.\n\nCongrats — you\'ve got a site that\'s built to bring you business.\n\n— [Your name]\nzadanstudio.com')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">End of free period — Care Basic clients (upgrade pitch)</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Your free Care month is ending — here's what's next</span></div>
+            <div class="email-field"><span class="email-key">When</span><span class="email-val">5 days before free Care period ends</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name],
+
+Your free Care Basic month is wrapping up in 5 days.
+
+To keep your site hosted, backed up, and running — it's $79/mo from here. I'll keep handling everything behind the scenes.
+
+[Stripe payment link — Care Basic]
+
+Or if you want to upgrade to Care Pro ($149/mo) you also get 2 hours of edits per month, a monthly Google Business post, and a monthly ranking report. A lot of my clients find that's worth the extra $70.
+
+[Stripe payment link — Care Pro]
+
+Let me know if you have any questions.
+
+— [Your name]</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--gs);color:var(--green);border:1px solid var(--gl)">Free period ending</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name],\n\nYour free Care Basic month is wrapping up in 5 days.\n\nTo keep your site hosted, backed up, and running — it\'s $79/mo from here. I\'ll keep handling everything behind the scenes.\n\n[Stripe payment link — Care Basic]\n\nOr if you want to upgrade to Care Pro ($149/mo) you also get 2 hours of edits per month, a monthly Google Business post, and a monthly ranking report. A lot of my clients find that\'s worth the extra $70.\n\n[Stripe payment link — Care Pro]\n\nLet me know if you have any questions.\n\n— [Your name]')">Copy</button>
+          </div>
+        </div>
+
+        <div class="divlabel">Monthly check-in — Care Pro clients</div>
+        <div class="email-wrap">
+          <div class="email-meta">
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">[Business Name] — monthly update</span></div>
+            <div class="email-field"><span class="email-key">When</span><span class="email-val">First of every month</span></div>
+          </div>
+          <div class="email-body">
+            <pre>Hey [Name],
+
+Here's your [Month] update for [website URL]:
+
+📊 Rankings: [brief note on keyword positions]
+🔒 Security: All clear — backups running daily
+⚡ Speed: [load time]
+📍 Google Business: [confirm post went live]
+
+Your 2 edit hours are available this month — anything you'd like updated? New photos, changed hours, updated services, anything at all — just reply here.
+
+— [Your name]</pre>
+          </div>
+          <div class="email-footer">
+            <span class="email-tag" style="background:var(--gs);color:var(--green);border:1px solid var(--gl)">Monthly — Care Pro</span>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name],\n\nHere\'s your [Month] update for [website URL]:\n\n📊 Rankings: [brief note on keyword positions]\n🔒 Security: All clear — backups running daily\n⚡ Speed: [load time]\n📍 Google Business: [confirm post went live]\n\nYour 2 edit hours are available this month — anything you\'d like updated? New photos, changed hours, updated services, anything at all — just reply here.\n\n— [Your name]')">Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end upsell panel -->
+
+  <!-- ══════════ CONTRACT ══════════ -->
+  <div class="panel" id="panel-contract">
+
+    <div class="card open">
+      <div class="card-hd" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(26,20,16,0.06)">📄</div>
+        <div class="card-hd-text"><p class="card-name">Service Agreement — Contract Template</p><p class="card-desc">Copy this into Docuseal · fill in the red fields per client</p></div>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="tip">Paste this into Docuseal's template editor. Replace anything in [brackets] with fill-in fields so you can personalize each contract when you send it.</div>
+
+        <div class="contract-doc">
+          <div class="contract-header">
+            <h2>Website Design Service Agreement</h2>
+            <p>Zadan Studio · zadanstudio.com · Miami, FL</p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Parties</p>
+            <p class="contract-text">
+              This agreement is between <strong>Zadan Studio</strong> ("Studio") and 
+              <span class="contract-blank">[Client Full Name]</span> on behalf of 
+              <span class="contract-blank">[Business Name]</span> ("Client"), 
+              entered into on <span class="contract-blank">[Date]</span>.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Project Scope</p>
+            <p class="contract-text">
+              Studio agrees to design and develop a custom website for Client under the 
+              <strong><span class="contract-blank">[Essential / Professional]</span> Package</strong>, which includes:<br><br>
+              <span class="contract-blank">[List deliverables from the chosen package — e.g. 5 pages, contact form, mobile responsive design, domain setup]</span><br><br>
+              Any work outside this scope will require a separate written agreement and additional payment.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Timeline</p>
+            <p class="contract-text">
+              Studio will deliver a design draft within <strong>2–3 business days</strong> of receiving the deposit and all required assets from Client. 
+              Final site will be launched within <strong><span class="contract-blank">[7 / 10]</span> business days</strong> of project start, 
+              provided Client supplies all requested content (logo, photos, copy) within 48 hours of request.<br><br>
+              Delays caused by Client's failure to provide materials will extend the timeline accordingly.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Payment</p>
+            <p class="contract-text">
+              Total project fee: <strong>$<span class="contract-blank">[750 / 1,200]</span></strong><br><br>
+              • <strong>50% deposit</strong> ($<span class="contract-blank">[375 / 600]</span>) is due upon signing this agreement. Work begins only after deposit is received.<br>
+              • <strong>50% balance</strong> ($<span class="contract-blank">[375 / 600]</span>) is due upon completion, before the site is launched and transferred.<br><br>
+              All payments are processed via Stripe. Deposit is non-refundable once work has begun.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Revisions</p>
+            <p class="contract-text">
+              This agreement includes <strong>2 rounds of revisions</strong>. A revision round is defined as a single consolidated list of changes submitted by Client. 
+              Additional revision rounds beyond the 2 included will be billed at <strong>$75/hour</strong>.<br><br>
+              Revisions must be submitted within <strong>48 hours</strong> of each draft delivery. Delays beyond 48 hours may affect the project timeline.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Ownership & Intellectual Property</p>
+            <p class="contract-text">
+              Upon receipt of final payment, Client owns the completed website and all custom design files created for this project.<br><br>
+              Studio retains the right to display the completed work in its portfolio and marketing materials unless Client requests otherwise in writing.<br><br>
+              Any third-party assets (fonts, stock photos, plugins) remain subject to their respective licenses.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Ongoing Care Plans (Optional)</p>
+            <p class="contract-text">
+              Client may opt into a monthly Care plan after launch:<br><br>
+              • <strong>Care Basic — $79/mo:</strong> Hosting, daily backups, uptime monitoring, security updates.<br>
+              • <strong>Care Pro — $149/mo:</strong> Everything in Basic, plus 2 hours of edits/month, monthly Google Business post, monthly ranking report, priority support, and 1 free page per quarter.<br><br>
+              Care plans are billed monthly via Stripe and may be cancelled with 30 days written notice. 
+              If Client does not maintain a Care plan, Studio is not responsible for hosting, maintenance, or security of the site.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Cancellation</p>
+            <p class="contract-text">
+              If Client cancels after work has begun, the deposit is non-refundable. 
+              If Studio cancels for any reason other than Client's breach of this agreement, Studio will refund the deposit in full.<br><br>
+              Either party may terminate this agreement with written notice if the other party materially breaches its terms and fails to remedy the breach within 5 business days.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Limitation of Liability</p>
+            <p class="contract-text">
+              Studio's total liability under this agreement shall not exceed the total amount paid by Client. 
+              Studio is not liable for any indirect, incidental, or consequential damages arising from the use or inability to use the delivered website.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Governing Law</p>
+            <p class="contract-text">
+              This agreement shall be governed by the laws of the State of <strong>Florida</strong>. 
+              Any disputes shall be resolved in Miami-Dade County, Florida.
+            </p>
+          </div>
+
+          <div class="contract-section">
+            <p class="contract-sec-title">Signatures</p>
+            <p class="contract-text" style="margin-bottom:16px">By signing below, both parties agree to the terms outlined in this agreement.</p>
+            <div class="sig-row">
+              <div class="sig-block">
+                <div class="sig-line"></div>
+                <p class="sig-label">Studio signature</p>
+                <p class="sig-name">Zadan Studio</p>
+              </div>
+              <div class="sig-block">
+                <div class="sig-line"></div>
+                <p class="sig-label">Client signature</p>
+                <p class="sig-name"><span class="contract-blank">[Client Name]</span></p>
+              </div>
+            </div>
+            <div class="sig-row" style="margin-top:20px">
+              <div class="sig-block">
+                <div class="sig-line"></div>
+                <p class="sig-label">Date</p>
+              </div>
+              <div class="sig-block">
+                <div class="sig-line"></div>
+                <p class="sig-label">Date</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end contract doc -->
+
+        <div style="margin-top:16px">
+          <button class="copy-btn" style="font-size:11px;padding:9px 20px" onclick="copyContract()">Copy full contract text</button>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end contract panel -->
+
+</div><!-- end page -->
+
+<!-- BOTTOM BAR -->
+<div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);border-radius:999px;padding:12px 24px;display:flex;align-items:center;gap:16px;box-shadow:0 8px 32px rgba(26,20,16,0.2);z-index:100;white-space:nowrap">
+  <p style="font-family:var(--mono);font-size:10px;color:rgba(245,241,234,0.3);letter-spacing:0.07em">Click copy on any template to grab it</p>
+  <button style="background:var(--rust);color:#F5F1EA;font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:9px 20px;border:none;border-radius:999px;cursor:pointer" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleCard(hd) { hd.parentElement.classList.toggle('open'); }
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyContract() {
+  const text = `WEBSITE DESIGN SERVICE AGREEMENT
+Zadan Studio · zadanstudio.com · Miami, FL
+
+PARTIES
+This agreement is between Zadan Studio ("Studio") and [Client Full Name] on behalf of [Business Name] ("Client"), entered into on [Date].
+
+PROJECT SCOPE
+Studio agrees to design and develop a custom website for Client under the [Essential / Professional] Package, which includes:
+[List deliverables from the chosen package]
+Any work outside this scope will require a separate written agreement and additional payment.
+
+TIMELINE
+Studio will deliver a design draft within 2–3 business days of receiving the deposit and all required assets from Client. Final site will be launched within [7 / 10] business days of project start, provided Client supplies all requested content within 48 hours of request. Delays caused by Client's failure to provide materials will extend the timeline accordingly.
+
+PAYMENT
+Total project fee: $[750 / 1,200]
+• 50% deposit ($[375 / 600]) is due upon signing. Work begins only after deposit is received.
+• 50% balance ($[375 / 600]) is due upon completion, before the site is launched and transferred.
+All payments are processed via Stripe. Deposit is non-refundable once work has begun.
+
+REVISIONS
+This agreement includes 2 rounds of revisions. Additional revision rounds are billed at $75/hour. Revisions must be submitted within 48 hours of each draft delivery.
+
+OWNERSHIP & INTELLECTUAL PROPERTY
+Upon receipt of final payment, Client owns the completed website and all custom design files. Studio retains the right to display the work in its portfolio. Third-party assets remain subject to their respective licenses.
+
+ONGOING CARE PLANS (OPTIONAL)
+• Care Basic — $79/mo: Hosting, backups, uptime monitoring, security updates.
+• Care Pro — $149/mo: Everything in Basic plus 2 hrs edits/month, monthly Google Business post, monthly ranking report, priority support, 1 free page/quarter.
+Care plans are billed monthly via Stripe and may be cancelled with 30 days written notice.
+
+CANCELLATION
+If Client cancels after work has begun, the deposit is non-refundable. If Studio cancels, deposit will be refunded in full.
+
+LIMITATION OF LIABILITY
+Studio's total liability shall not exceed the total amount paid by Client.
+
+GOVERNING LAW
+This agreement is governed by the laws of the State of Florida. Disputes resolved in Miami-Dade County, Florida.
+
+SIGNATURES
+
+Studio: Zadan Studio _________________ Date: _________
+
+Client: [Client Name] _________________ Date: _________`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.currentTarget;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy full contract text'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+</script>
+</body>
+</html>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zadan Studio — Workspace Setup</title>
+<title>Sunblock Studio — Workspace Setup</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg:#F0EDE6; --surface:#FAFAF7; --s2:#F5F2EB;
-  --rust:#C4522A; --rs:rgba(196,82,42,0.10); --rl:rgba(196,82,42,0.25);
+  --rust:#D98200; --rs:rgba(217,130,0,0.10); --rl:rgba(217,130,0,0.25);
   --ink:#1A1410; --mid:#5a4d44; --faint:rgba(26,20,16,0.08); --ghost:rgba(26,20,16,0.04);
   --notion:#191919; --gdrive:#1a73e8; --github:#24292f; --stripe:#635bff;
   --serif:'Cormorant Garamond',Georgia,serif; --mono:'DM Mono',monospace;
@@ -19,10 +19,10 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
 
 /* header */
 .hdr { background:var(--surface); border-radius:28px; padding:44px 52px 40px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(26,20,16,0.06); }
-.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(196,82,42,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
+.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(217,130,0,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
 .hdr-top { display:flex; align-items:center; gap:9px; margin-bottom:32px; }
 .dot { width:8px; height:8px; background:var(--rust); border-radius:50%; box-shadow:0 0 0 3px var(--rs); animation:breathe 3s ease-in-out infinite; }
-@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(196,82,42,0.05)} }
+@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(217,130,0,0.05)} }
 .brand { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); }
 .hdr h1 { font-family:var(--serif); font-size:52px; font-weight:300; line-height:1; margin-bottom:10px; }
 .hdr h1 em { font-style:italic; color:var(--rust); }
@@ -124,7 +124,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
   <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-blur"></div>
-    <div class="hdr-top"><div class="dot"></div><span class="brand">Zadan Studio</span></div>
+    <div class="hdr-top"><div class="dot"></div><span class="brand">Sunblock Studio</span></div>
     <h1>Workspace <em>Setup</em></h1>
     <p>Every step links directly to the right place. No hunting around.<br>Work through each tab top to bottom — takes about 20 minutes total.</p>
     <div class="tabs">
@@ -147,7 +147,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
         <span class="chevron">▶</span>
       </div>
       <div class="sec-body">
-        <div class="note-box">Start here → create a free account, then make a new page called "Zadan Studio" and build the 4 pages below inside it.</div>
+        <div class="note-box">Start here → create a free account, then make a new page called "Sunblock Studio" and build the 4 pages below inside it.</div>
         <ul class="step-list">
 
           <li class="step" onclick="toggleStep(this)">
@@ -177,7 +177,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
             <div class="step-check">✓</div>
             <div class="step-body">
               <p class="step-title">Page 2 — Brand Guidelines</p>
-              <p class="step-sub">Tagline: "Built to bring you business." · Cream #F5F1EA · Rust #C4522A · Ink #1A1410 · Fonts: Cormorant Garamond + DM Mono</p>
+              <p class="step-sub">Tagline: "Built to bring you business." · Cream #F5F1EA · Sun Gold #D98200 · Ink #1A1410 · Fonts: Cormorant Garamond + DM Mono</p>
               <div class="link-row">
                 <a class="lchip lchip-notion" href="https://notion.new" target="_blank">New Notion page</a>
               </div>
@@ -245,7 +245,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
         <span class="chevron">▶</span>
       </div>
       <div class="sec-body">
-        <div class="note-box">Go to Google Drive → New → Folder → Name it "Zadan Studio" → Create the 5 folders below inside it</div>
+        <div class="note-box">Go to Google Drive → New → Folder → Name it "Sunblock Studio" → Create the 5 folders below inside it</div>
         <ul class="step-list">
 
           <li class="step" onclick="toggleStep(this)">
@@ -275,7 +275,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
               <p class="step-title">📁 02 — Sales & Proposals</p>
               <p class="step-sub">Upload the proposal template HTML file here. Create a "Sent Proposals" subfolder — save one PDF per client after sending.</p>
               <div class="link-row">
-                <a class="lchip lchip-rust" href="zadan-proposal-template.html" target="_blank">Proposal template (this file)</a>
+                <a class="lchip lchip-rust" href="zs-prop-m4q9.html" target="_blank">Proposal template (this file)</a>
                 <a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Upload to Drive</a>
               </div>
             </div>
@@ -296,7 +296,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
             <div class="step-check">✓</div>
             <div class="step-body">
               <p class="step-title">📁 04 — Website Assets</p>
-              <p class="step-sub">Logo files (SVG + PNG, dark & light), portfolio screenshots, brand color swatches</p>
+              <p class="step-sub">Logo files (SVG + PNG, dark & light), launch screenshots, brand color swatches</p>
               <div class="link-row">
                 <a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Create in Drive</a>
               </div>
@@ -345,7 +345,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
           <li class="step" onclick="toggleStep(this)">
             <div class="step-check">✓</div>
             <div class="step-body">
-              <p class="step-title">Create repo: zadanstudio-website</p>
+              <p class="step-title">Create repo: sunblockstudio-website</p>
               <p class="step-sub">Set to Private. Add a README. This holds all your site code.</p>
               <div class="link-row">
                 <a class="lchip lchip-github" href="https://github.com/new" target="_blank">github.com/new — Create repo</a>
@@ -357,7 +357,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
             <div class="step-check">✓</div>
             <div class="step-body">
               <p class="step-title">Upload your site files</p>
-              <p class="step-sub">index.html, portfolio.html, about.html, contact.html, style.css, assets/ folder. Drag and drop directly in the browser — no terminal needed.</p>
+              <p class="step-sub">index.html, services.html, about.html, contact.html, style.css, assets/ folder. Drag and drop directly in the browser — no terminal needed.</p>
               <div class="link-row">
                 <a class="lchip lchip-github" href="https://github.com" target="_blank">Go to your repo → Add file → Upload</a>
               </div>
@@ -394,11 +394,11 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
         <div class="sp-grid" style="margin-bottom:18px">
           <div class="sp-card" style="border-color:rgba(80,160,80,0.3);background:rgba(80,160,80,0.04)">
             <span class="sp-type rec">Recurring ✓</span>
-            <div class="sp-info"><p class="sp-name">Care Basic — Zadan Studio</p><p class="sp-desc">Monthly hosting, backups, uptime monitoring & security updates</p><p class="sp-price">$79<span style="font-family:var(--mono);font-size:12px;color:var(--mid)">/mo</span></p></div>
+            <div class="sp-info"><p class="sp-name">Care Basic — Sunblock Studio</p><p class="sp-desc">Monthly hosting, backups, uptime monitoring & security updates</p><p class="sp-price">$79<span style="font-family:var(--mono);font-size:12px;color:var(--mid)">/mo</span></p></div>
           </div>
           <div class="sp-card" style="border-color:rgba(80,160,80,0.3);background:rgba(80,160,80,0.04)">
             <span class="sp-type rec">Recurring ✓</span>
-            <div class="sp-info"><p class="sp-name">Care Pro — Zadan Studio</p><p class="sp-desc">Hosting, backups, 2hrs edits/month, Google Business post, ranking report & priority support</p><p class="sp-price">$149<span style="font-family:var(--mono);font-size:12px;color:var(--mid)">/mo</span></p></div>
+            <div class="sp-info"><p class="sp-name">Care Pro — Sunblock Studio</p><p class="sp-desc">Hosting, backups, 2hrs edits/month, Google Business post, ranking report & priority support</p><p class="sp-price">$149<span style="font-family:var(--mono);font-size:12px;color:var(--mid)">/mo</span></p></div>
           </div>
         </div>
 
@@ -562,13 +562,13 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
 
           <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create Notion account</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.com" target="_blank">notion.com</a></div></div></li>
 
-          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create "Zadan Studio" workspace + 6 pages in Notion</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.new" target="_blank">notion.new</a></div></div></li>
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create "Sunblock Studio" workspace + 6 pages in Notion</p><div class="link-row"><a class="lchip lchip-notion" href="https://notion.new" target="_blank">notion.new</a></div></div></li>
 
-          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create "Zadan Studio" folder in Google Drive</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com" target="_blank">drive.google.com</a></div></div></li>
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create "Sunblock Studio" folder in Google Drive</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com" target="_blank">drive.google.com</a></div></div></li>
 
           <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create 5 subfolders in Drive (Business, Sales, Clients, Assets, Finance)</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">My Drive</a></div></div></li>
 
-          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Upload proposal template to Drive → 02 Sales & Proposals</p><div class="link-row"><a class="lchip lchip-rust" href="zadan-proposal-template.html" target="_blank">Proposal template</a><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Drive upload</a></div></div></li>
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Upload proposal template to Drive → 02 Sales & Proposals</p><div class="link-row"><a class="lchip lchip-rust" href="zs-prop-m4q9.html" target="_blank">Proposal template</a><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">Drive upload</a></div></div></li>
 
           <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create _Template Client Folder in Drive → 03 Clients</p><div class="link-row"><a class="lchip lchip-drive" href="https://drive.google.com/drive/my-drive" target="_blank">My Drive</a></div></div></li>
 
@@ -576,7 +576,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
 
           <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create GitHub account</p><div class="link-row"><a class="lchip lchip-github" href="https://github.com/signup" target="_blank">github.com/signup</a></div></div></li>
 
-          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create private repo: zadanstudio-website</p><div class="link-row"><a class="lchip lchip-github" href="https://github.com/new" target="_blank">github.com/new</a></div></div></li>
+          <li class="step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Create private repo: sunblockstudio-website</p><div class="link-row"><a class="lchip lchip-github" href="https://github.com/new" target="_blank">github.com/new</a></div></div></li>
 
           <li class="step done-step" onclick="toggleStep(this,true)"><div class="step-check">✓</div><div class="step-body"><p class="step-title">Stripe: Care Basic $79/mo — Done ✓</p><div class="link-row"><a class="lchip lchip-stripe" href="https://dashboard.stripe.com/products" target="_blank">Stripe products</a></div></div></li>
 

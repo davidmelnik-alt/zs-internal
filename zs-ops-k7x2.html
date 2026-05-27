@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zadan Studio — Onboarding & Operations</title>
+<title>Sunblock Studio — Onboarding & Operations</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg:#F0EDE6; --surface:#FAFAF7; --s2:#F5F2EB; --s3:#eeeae1;
-  --rust:#C4522A; --rs:rgba(196,82,42,0.10); --rl:rgba(196,82,42,0.25);
+  --rust:#D98200; --rs:rgba(217,130,0,0.10); --rl:rgba(217,130,0,0.25);
   --ink:#1A1410; --mid:#5a4d44; --faint:rgba(26,20,16,0.08); --ghost:rgba(26,20,16,0.04);
   --green:#2e7d2e; --gs:rgba(46,125,46,0.09); --gl:rgba(46,125,46,0.25);
   --blue:#1a73e8; --bs:rgba(26,115,232,0.08); --bl:rgba(26,115,232,0.2);
@@ -20,10 +20,10 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
 
 /* header */
 .hdr { background:var(--surface); border-radius:28px; padding:44px 52px 40px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(26,20,16,0.06); }
-.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(196,82,42,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
+.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(217,130,0,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
 .hdr-top { display:flex; align-items:center; gap:9px; margin-bottom:32px; }
 .dot { width:8px; height:8px; background:var(--rust); border-radius:50%; box-shadow:0 0 0 3px var(--rs); animation:breathe 3s ease-in-out infinite; }
-@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(196,82,42,0.05)} }
+@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(217,130,0,0.05)} }
 .brand { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); }
 .hdr h1 { font-family:var(--serif); font-size:52px; font-weight:300; line-height:1; margin-bottom:10px; }
 .hdr h1 em { font-style:italic; color:var(--rust); }
@@ -142,7 +142,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
   <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-blur"></div>
-    <div class="hdr-top"><div class="dot"></div><span class="brand">Zadan Studio</span></div>
+    <div class="hdr-top"><div class="dot"></div><span class="brand">Sunblock Studio</span></div>
     <h1>Operations &amp; <em>Onboarding</em></h1>
     <p>Client onboarding checklist · Day-by-day project workflow · Care plan monthly SOP<br>Check off each item as you go — progress is saved per client.</p>
     <div class="tabs">
@@ -341,7 +341,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
           </li>
           <li class="cl-item" onclick="toggleCl(this,'p4')">
             <div class="cl-box">✓</div>
-            <div class="cl-content"><p class="cl-title">Add to portfolio</p><p class="cl-sub">Take a screenshot, note the niche and result, add to Notion → Website → Portfolio and to zadanstudio.com when you update the site</p></div>
+            <div class="cl-content"><p class="cl-title">Save launch record</p><p class="cl-sub">Take final desktop and mobile screenshots, save the launch URL, and store the record in Notion → Clients so you have clean proof for future follow-up</p></div>
             <span class="cl-tag tag-you">You</span>
           </li>
         </ul>
@@ -441,7 +441,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
                 <li>Final live checks</li>
                 <li>Send launch email with next steps + Care plan info</li>
                 <li>Update Notion tracker · Set Care plan reminder</li>
-                <li>Add to portfolio</li>
+                <li>Save launch record</li>
               </ul>
             </div>
           </div>
@@ -493,7 +493,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
             </ul>
           </div>
           <div class="sop-card" style="border-color:var(--rl)">
-            <div class="sop-hd" style="background:rgba(196,82,42,0.04)">
+            <div class="sop-hd" style="background:rgba(217,130,0,0.04)">
               <p class="sop-plan">Every month</p>
               <p class="sop-name">Care Pro</p>
               <p class="sop-price">$149/mo · ~45 min per client</p>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zadan Studio — Sales Kit</title>
+<title>Sunblock Studio — Sales Kit</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg:#F0EDE6; --surface:#FAFAF7; --s2:#F5F2EB; --s3:#eeeae1;
-  --rust:#C4522A; --rs:rgba(196,82,42,0.10); --rl:rgba(196,82,42,0.25);
+  --rust:#D98200; --rs:rgba(217,130,0,0.10); --rl:rgba(217,130,0,0.25);
   --ink:#1A1410; --mid:#5a4d44; --faint:rgba(26,20,16,0.08); --ghost:rgba(26,20,16,0.04);
   --green:#2e7d2e; --gs:rgba(46,125,46,0.10); --gl:rgba(46,125,46,0.25);
   --blue:#1a73e8; --bs:rgba(26,115,232,0.08); --bl:rgba(26,115,232,0.2);
@@ -20,10 +20,10 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
 
 /* header */
 .hdr { background:var(--surface); border-radius:28px; padding:44px 52px 40px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(26,20,16,0.06); }
-.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(196,82,42,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
+.hdr-blur { position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(217,130,0,0.10) 0%,transparent 70%); top:-100px; right:-60px; pointer-events:none; }
 .hdr-top { display:flex; align-items:center; gap:9px; margin-bottom:32px; }
 .dot { width:8px; height:8px; background:var(--rust); border-radius:50%; box-shadow:0 0 0 3px var(--rs); animation:breathe 3s ease-in-out infinite; }
-@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(196,82,42,0.05)} }
+@keyframes breathe { 0%,100%{box-shadow:0 0 0 3px var(--rs)} 50%{box-shadow:0 0 0 6px rgba(217,130,0,0.05)} }
 .brand { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); }
 .hdr h1 { font-family:var(--serif); font-size:52px; font-weight:300; line-height:1; margin-bottom:10px; }
 .hdr h1 em { font-style:italic; color:var(--rust); }
@@ -151,11 +151,11 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
   <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-blur"></div>
-    <div class="hdr-top"><div class="dot"></div><span class="brand">Zadan Studio</span></div>
+    <div class="hdr-top"><div class="dot"></div><span class="brand">Sunblock Studio</span></div>
     <h1>Sales <em>Kit</em></h1>
     <p>Discovery call script · Email & DM templates · Service contract<br>Edit anything in red brackets before using.</p>
     <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('call',this)"><span class="tbdot" style="background:#C4522A"></span>Call Script</button>
+      <button class="tab-btn active" onclick="showTab('call',this)"><span class="tbdot" style="background:#D98200"></span>Call Script</button>
       <button class="tab-btn" onclick="showTab('outreach',this)"><span class="tbdot" style="background:#1a73e8"></span>Cold Outreach</button>
       <button class="tab-btn" onclick="showTab('followup',this)"><span class="tbdot" style="background:#7b3fa0"></span>Follow-ups</button>
       <button class="tab-btn" onclick="showTab('upsell',this)"><span class="tbdot" style="background:#2e7d2e"></span>Care Upsell</button>
@@ -277,7 +277,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--mono); -webkit-
           </div>
           <div class="obj-card">
             <p class="obj-q">How do I know it'll look good?</p>
-            <p class="obj-a">Fair question — let me send you a few examples right now. [share cybersecurityreach.org, unitedworldleaders.org, Brickell Law Group]. These are real sites I've built. If you like the style, we're a good fit.</p>
+            <p class="obj-a">Fair question — before we start, I can send a private preview packet or a visual direction board so you can see the style we would use. You will also review the first draft before anything goes live.</p>
           </div>
         </div>
 
@@ -377,7 +377,7 @@ Open to a quick call this week?</pre>
             <div class="email-field"><span class="email-key">To</span><span class="email-key">Professional or business owner on LinkedIn</span></div>
           </div>
           <div class="email-body">
-            <pre>Hi [Name] — I run Zadan Studio, a Miami-based web design agency.
+            <pre>Hi [Name] — I run Sunblock Studio, a Miami-based web design agency.
 
 I noticed [Business Name] and thought your online presence could be doing more for you. I build custom sites in 7 days, focused on turning visitors into clients.
 
@@ -385,7 +385,7 @@ Worth a 15-minute call to explore?</pre>
           </div>
           <div class="email-footer">
             <span class="email-tag" style="background:var(--bs);color:var(--blue);border:1px solid var(--bl)">LinkedIn</span>
-            <button class="copy-btn" onclick="copyText(this,'Hi [Name] — I run Zadan Studio, a Miami-based web design agency.\n\nI noticed [Business Name] and thought your online presence could be doing more for you. I build custom sites in 7 days, focused on turning visitors into clients.\n\nWorth a 15-minute call to explore?')">Copy</button>
+            <button class="copy-btn" onclick="copyText(this,'Hi [Name] — I run Sunblock Studio, a Miami-based web design agency.\n\nI noticed [Business Name] and thought your online presence could be doing more for you. I build custom sites in 7 days, focused on turning visitors into clients.\n\nWorth a 15-minute call to explore?')">Copy</button>
           </div>
         </div>
 
@@ -400,16 +400,16 @@ Worth a 15-minute call to explore?</pre>
 
 I came across [Business Name] while looking at [niche] businesses in Miami.
 
-I run Zadan Studio — we build custom websites for local businesses in about 7 days. Sites designed to build trust and bring in clients, not just exist online.
+I run Sunblock Studio — we build custom websites for local businesses in about 7 days. Sites designed to build trust and bring in clients, not just exist online.
 
 I took a quick look at your current site and think there's a real opportunity to make it work a lot harder for you. Worth a 15-minute call this week?
 
 — [Your name]
-zadanstudio.com</pre>
+sunblockstudio.com</pre>
           </div>
           <div class="email-footer">
             <span class="email-tag" style="background:var(--bs);color:var(--blue);border:1px solid var(--bl)">Email</span>
-            <button class="copy-btn" onclick="copyText(this,'Hi [Name],\n\nI came across [Business Name] while looking at [niche] businesses in Miami.\n\nI run Zadan Studio — we build custom websites for local businesses in about 7 days. Sites designed to build trust and bring in clients, not just exist online.\n\nI took a quick look at your current site and think there\'s a real opportunity to make it work a lot harder for you. Worth a 15-minute call this week?\n\n— [Your name]\nzadanstudio.com')">Copy</button>
+            <button class="copy-btn" onclick="copyText(this,'Hi [Name],\n\nI came across [Business Name] while looking at [niche] businesses in Miami.\n\nI run Sunblock Studio — we build custom websites for local businesses in about 7 days. Sites designed to build trust and bring in clients, not just exist online.\n\nI took a quick look at your current site and think there\'s a real opportunity to make it work a lot harder for you. Worth a 15-minute call this week?\n\n— [Your name]\nsunblockstudio.com')">Copy</button>
           </div>
         </div>
 
@@ -432,7 +432,7 @@ zadanstudio.com</pre>
         <div class="divlabel">After the discovery call — send same day</div>
         <div class="email-wrap">
           <div class="email-meta">
-            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Your proposal — Zadan Studio</span></div>
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Your proposal — Sunblock Studio</span></div>
             <div class="email-field"><span class="email-key">When</span><span class="email-val">Within 2 hours of the call</span></div>
           </div>
           <div class="email-body">
@@ -452,18 +452,18 @@ To move forward: sign the contract and pay the deposit — I'll start within 24 
 Any questions, just reply here. Happy to jump on a quick call too if it's easier.
 
 — [Your name]
-zadanstudio.com</pre>
+sunblockstudio.com</pre>
           </div>
           <div class="email-footer">
             <span class="email-tag" style="background:rgba(123,63,160,0.08);color:#7b3fa0;border:1px solid rgba(123,63,160,0.2)">Post-call</span>
-            <button class="copy-btn" onclick="copyText(this, 'Hi [Name],\n\nGreat talking with you today. Based on what you shared about [their main pain point], here\'s the proposal I\'d recommend.\n\n[ATTACH PROPOSAL PDF]\n\nThe short version:\n— [Package name] · $[price]\n— Live in [X] days\n— [1 key feature relevant to their problem]\n\nTo move forward: sign the contract and pay the deposit — I\'ll start within 24 hours.\n\nAny questions, just reply here. Happy to jump on a quick call too if it\'s easier.\n\n— [Your name]\nzadanstudio.com')">Copy</button>
+            <button class="copy-btn" onclick="copyText(this, 'Hi [Name],\n\nGreat talking with you today. Based on what you shared about [their main pain point], here\'s the proposal I\'d recommend.\n\n[ATTACH PROPOSAL PDF]\n\nThe short version:\n— [Package name] · $[price]\n— Live in [X] days\n— [1 key feature relevant to their problem]\n\nTo move forward: sign the contract and pay the deposit — I\'ll start within 24 hours.\n\nAny questions, just reply here. Happy to jump on a quick call too if it\'s easier.\n\n— [Your name]\nsunblockstudio.com')">Copy</button>
           </div>
         </div>
 
         <div class="divlabel">48-hour no reply nudge</div>
         <div class="email-wrap">
           <div class="email-meta">
-            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Re: Your proposal — Zadan Studio</span></div>
+            <div class="email-field"><span class="email-key">Subject</span><span class="email-val">Re: Your proposal — Sunblock Studio</span></div>
             <div class="email-field"><span class="email-key">When</span><span class="email-val">48 hours after sending proposal — no response</span></div>
           </div>
           <div class="email-body">
@@ -506,11 +506,11 @@ If the timing isn't right, totally fine. If you're still interested, I can hold 
             <div class="email-field"><span class="email-key">Via</span><span class="email-val">Text message — within 2 hours of meeting</span></div>
           </div>
           <div class="email-body">
-            <pre>Hey [Name] — great meeting you today. Here are a couple sites I've built so you can get a feel for my work: cybersecurityreach.org and unitedworldleaders.org. Happy to put together something for [their business] — just say the word.</pre>
+            <pre>Hey [Name] — great meeting you today. Here is the direction I think would work well for your business. Happy to put together something for [their business] — just say the word.</pre>
           </div>
           <div class="email-footer">
             <span class="email-tag" style="background:rgba(123,63,160,0.08);color:#7b3fa0;border:1px solid rgba(123,63,160,0.2)">Text</span>
-            <button class="copy-btn" onclick="copyText(this,'Hey [Name] — great meeting you today. Here are a couple sites I\'ve built so you can get a feel for my work: cybersecurityreach.org and unitedworldleaders.org. Happy to put together something for [their business] — just say the word.')">Copy</button>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name] — great meeting you today. Here is the direction I think would work well for your business. Happy to put together something for [their business] — just say the word.')">Copy</button>
           </div>
         </div>
 
@@ -555,11 +555,11 @@ I'll send the Stripe subscription link when your free period ends. Any questions
 Congrats — you've got a site that's built to bring you business.
 
 — [Your name]
-zadanstudio.com</pre>
+sunblockstudio.com</pre>
           </div>
           <div class="email-footer">
             <span class="email-tag" style="background:var(--gs);color:var(--green);border:1px solid var(--gl)">Launch day</span>
-            <button class="copy-btn" onclick="copyText(this,'Hey [Name],\n\nYour site is live — [website URL].\n\nIt\'s been a pleasure building this for you. Here\'s what to do right now:\n— Share it on your Instagram and Facebook today\n— Send the link to your best 5 clients and ask them what they think\n— Add it to your email signature and Google Business profile\n\nOne more thing: now that the site is live, I want to make sure it stays fast, secure, and keeps working for you. That\'s what the Care plan is for.\n\n[Package they\'re getting] includes [X months] free — after that it\'s $[price]/mo and I handle everything: hosting, backups, security, and [edits if Pro].\n\nI\'ll send the Stripe subscription link when your free period ends. Any questions, I\'m here.\n\nCongrats — you\'ve got a site that\'s built to bring you business.\n\n— [Your name]\nzadanstudio.com')">Copy</button>
+            <button class="copy-btn" onclick="copyText(this,'Hey [Name],\n\nYour site is live — [website URL].\n\nIt\'s been a pleasure building this for you. Here\'s what to do right now:\n— Share it on your Instagram and Facebook today\n— Send the link to your best 5 clients and ask them what they think\n— Add it to your email signature and Google Business profile\n\nOne more thing: now that the site is live, I want to make sure it stays fast, secure, and keeps working for you. That\'s what the Care plan is for.\n\n[Package they\'re getting] includes [X months] free — after that it\'s $[price]/mo and I handle everything: hosting, backups, security, and [edits if Pro].\n\nI\'ll send the Stripe subscription link when your free period ends. Any questions, I\'m here.\n\nCongrats — you\'ve got a site that\'s built to bring you business.\n\n— [Your name]\nsunblockstudio.com')">Copy</button>
           </div>
         </div>
 
@@ -637,13 +637,13 @@ Your 2 edit hours are available this month — anything you'd like updated? New 
         <div class="contract-doc">
           <div class="contract-header">
             <h2>Website Design Service Agreement</h2>
-            <p>Zadan Studio · zadanstudio.com · Miami, FL</p>
+            <p>Sunblock Studio · sunblockstudio.com · Miami, FL</p>
           </div>
 
           <div class="contract-section">
             <p class="contract-sec-title">Parties</p>
             <p class="contract-text">
-              This agreement is between <strong>Zadan Studio</strong> ("Studio") and 
+              This agreement is between <strong>Sunblock Studio</strong> ("Studio") and 
               <span class="contract-blank">[Client Full Name]</span> on behalf of 
               <span class="contract-blank">[Business Name]</span> ("Client"), 
               entered into on <span class="contract-blank">[Date]</span>.
@@ -693,7 +693,7 @@ Your 2 edit hours are available this month — anything you'd like updated? New 
             <p class="contract-sec-title">Ownership & Intellectual Property</p>
             <p class="contract-text">
               Upon receipt of final payment, Client owns the completed website and all custom design files created for this project.<br><br>
-              Studio retains the right to display the completed work in its portfolio and marketing materials unless Client requests otherwise in writing.<br><br>
+              Studio may request permission to reference the completed work in marketing materials after launch. Client can decline that request in writing.<br><br>
               Any third-party assets (fonts, stock photos, plugins) remain subject to their respective licenses.
             </p>
           </div>
@@ -741,7 +741,7 @@ Your 2 edit hours are available this month — anything you'd like updated? New 
               <div class="sig-block">
                 <div class="sig-line"></div>
                 <p class="sig-label">Studio signature</p>
-                <p class="sig-name">Zadan Studio</p>
+                <p class="sig-name">Sunblock Studio</p>
               </div>
               <div class="sig-block">
                 <div class="sig-line"></div>
@@ -799,10 +799,10 @@ function copyText(btn, text) {
 
 function copyContract() {
   const text = `WEBSITE DESIGN SERVICE AGREEMENT
-Zadan Studio · zadanstudio.com · Miami, FL
+Sunblock Studio · sunblockstudio.com · Miami, FL
 
 PARTIES
-This agreement is between Zadan Studio ("Studio") and [Client Full Name] on behalf of [Business Name] ("Client"), entered into on [Date].
+This agreement is between Sunblock Studio ("Studio") and [Client Full Name] on behalf of [Business Name] ("Client"), entered into on [Date].
 
 PROJECT SCOPE
 Studio agrees to design and develop a custom website for Client under the [Essential / Professional] Package, which includes:
@@ -822,7 +822,7 @@ REVISIONS
 This agreement includes 2 rounds of revisions. Additional revision rounds are billed at $75/hour. Revisions must be submitted within 48 hours of each draft delivery.
 
 OWNERSHIP & INTELLECTUAL PROPERTY
-Upon receipt of final payment, Client owns the completed website and all custom design files. Studio retains the right to display the work in its portfolio. Third-party assets remain subject to their respective licenses.
+Upon receipt of final payment, Client owns the completed website and all custom design files. Studio may request permission to reference the completed work in marketing materials. Third-party assets remain subject to their respective licenses.
 
 ONGOING CARE PLANS (OPTIONAL)
 • Care Basic — $79/mo: Hosting, backups, uptime monitoring, security updates.
@@ -840,7 +840,7 @@ This agreement is governed by the laws of the State of Florida. Disputes resolve
 
 SIGNATURES
 
-Studio: Zadan Studio _________________ Date: _________
+Studio: Sunblock Studio _________________ Date: _________
 
 Client: [Client Name] _________________ Date: _________`;
 

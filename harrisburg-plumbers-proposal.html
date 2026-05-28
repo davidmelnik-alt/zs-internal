@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal — Harrisburg Plumbers | Sunblock Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --rust:#D98200; --ink:#1A1410; --mid:#5a4d44;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'DM Mono',monospace;
+}
+
+/* ─── SCREEN VIEW ─── */
+body {
+  background: #EDEAE3;
+  font-family: var(--mono);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  padding: 48px 20px 120px;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #FAFAF7;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+  padding: 64px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+}
+
+/* ─── SHARED STYLES ─── */
+.label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.label::after { content:''; flex:1; height:1px; background:rgba(26,20,16,0.08); }
+
+/* ─── HEADER ─── */
+.hdr-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 44px;
+}
+.studio { font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--rust); }
+.meta { text-align:right; display:flex; flex-direction:column; gap:4px; }
+.meta-row { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
+.mk { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(26,20,16,0.28); }
+.mv { font-family:var(--mono); font-size:11px; color:var(--mid); background:transparent; border:none; outline:none; text-align:right; border-bottom:1px dashed rgba(217,130,0,0.3); min-width:140px; padding-bottom:1px; }
+h1 { font-family:var(--serif); font-size:62px; font-weight:300; line-height:0.95; color:var(--ink); margin-bottom:14px; }
+h1 em { font-style:italic; color:var(--rust); display:block; }
+.tagline { font-family:var(--mono); font-size:11px; color:var(--mid); opacity:0.6; line-height:1.8; }
+
+/* ─── OVERVIEW ─── */
+.overview-text {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--mid);
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+}
+
+/* ─── PACKAGES ─── */
+.pkg-opts { display:flex; flex-direction:column; gap:16px; }
+.pkg-opt {
+  padding: 24px 28px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(26,20,16,0.08);
+  background: #F5F2EB;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.pkg-opt:hover { border-color: rgba(217,130,0,0.3); }
+.pkg-opt.sel { border-color: var(--rust); background: white; }
+.pkg-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.pkg-name { font-family:var(--serif); font-size:26px; font-weight:300; color:var(--ink); }
+.pkg-badge { font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--rust); border:1px solid rgba(217,130,0,0.25); border-radius:999px; padding:4px 11px; }
+.pkg-price { font-family:var(--serif); font-size:40px; font-weight:300; color:var(--ink); line-height:1; margin-bottom:4px; }
+.pkg-price sup { font-size:20px; vertical-align:super; }
+.pkg-dep { font-family:var(--mono); font-size:10px; color:rgba(26,20,16,0.28); margin-bottom:16px; }
+.pkg-items { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:6px 24px; }
+.pkg-items li { font-family:var(--mono); font-size:11px; color:var(--mid); display:flex; align-items:center; gap:7px; }
+.pkg-items li::before { content:'→'; color:var(--rust); font-size:10px; flex-shrink:0; }
+
+/* ─── CARE ─── */
+.care-opts { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.care-opt {
+  padding: 20px 22px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(26,20,16,0.08);
+  background: #F5F2EB;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.care-opt:hover { border-color: rgba(217,130,0,0.3); }
+.care-opt.sel { border-color: var(--rust); background: white; }
+.care-tag { font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--rust); margin-bottom:6px; }
+.care-name { font-family:var(--serif); font-size:20px; font-weight:300; color:var(--ink); margin-bottom:2px; }
+.care-price { font-family:var(--serif); font-size:28px; font-weight:300; color:var(--ink); margin-bottom:14px; line-height:1; }
+.care-price sub { font-size:11px; color:var(--mid); font-family:var(--mono); }
+.care-list { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.care-list li { font-family:var(--mono); font-size:10px; color:var(--mid); display:flex; align-items:center; gap:7px; padding-bottom:6px; border-bottom:1px solid rgba(26,20,16,0.06); }
+.care-list li:last-child { border-bottom:none; padding-bottom:0; }
+.care-list li::before { content:'✓'; color:var(--rust); font-size:9px; flex-shrink:0; font-weight:600; }
+
+/* ─── TIMELINE ─── */
+.tl { display:grid; grid-template-columns:repeat(4,1fr); position:relative; }
+.tl::before { content:''; position:absolute; top:7px; left:7px; right:7px; height:1px; background:linear-gradient(90deg,var(--rust),rgba(217,130,0,0.15)); }
+.tl-step { padding-top:22px; padding-right:10px; }
+.tl-dot { width:15px; height:15px; border:1.5px solid rgba(217,130,0,0.35); border-radius:50%; background:white; margin-bottom:12px; position:relative; top:-18px; }
+.tl-dot.lit { background:var(--rust); border-color:var(--rust); }
+.tl-day { font-family:var(--mono); font-size:8px; color:var(--rust); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:4px; }
+.tl-label { font-family:var(--serif); font-size:14px; font-weight:300; color:var(--ink); line-height:1.3; }
+
+/* ─── PAYMENT ─── */
+.pay-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px; }
+.pay-block { padding:20px 24px; border-radius:14px; border:1.5px solid rgba(26,20,16,0.08); background:#F5F2EB; }
+.pay-block.primary { background:var(--rust); border-color:var(--rust); }
+.pay-lbl { font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(26,20,16,0.28); margin-bottom:8px; }
+.pay-block.primary .pay-lbl { color:rgba(255,255,255,0.55); }
+.pay-amt { font-family:var(--serif); font-size:36px; font-weight:300; color:var(--ink); line-height:1; margin-bottom:4px; }
+.pay-block.primary .pay-amt { color:white; }
+.pay-note { font-family:var(--mono); font-size:10px; color:rgba(26,20,16,0.28); }
+.pay-block.primary .pay-note { color:rgba(255,255,255,0.45); }
+.stripe-note { font-family:var(--mono); font-size:10px; color:rgba(26,20,16,0.3); display:flex; align-items:center; gap:6px; }
+.stripe-note::before { content:''; width:5px; height:5px; background:var(--rust); border-radius:50%; flex-shrink:0; }
+
+/* ─── NEEDS ─── */
+.needs { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.need { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border-radius:10px; background:#F5F2EB; }
+.need-n { font-family:var(--mono); font-size:9px; color:var(--rust); flex-shrink:0; opacity:0.7; margin-top:1px; }
+.need-t { font-family:var(--mono); font-size:11px; color:var(--mid); line-height:1.5; }
+
+/* ─── CLOSING ─── */
+.closing { text-align:center; padding: 8px 0; }
+.closing-h { font-family:var(--serif); font-size:40px; font-weight:300; color:var(--ink); margin-bottom:12px; line-height:1.1; }
+.closing-h em { font-style:italic; color:var(--rust); }
+.closing-sub { font-family:var(--mono); font-size:11px; color:var(--mid); line-height:1.8; opacity:0.7; margin-bottom:28px; }
+.closing-btn { display:inline-flex; align-items:center; gap:8px; background:var(--rust); color:white; font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; padding:14px 32px; border-radius:999px; text-decoration:none; border:none; cursor:pointer; transition:all 0.18s; }
+.closing-btn:hover { background:#B96800; box-shadow:0 6px 24px rgba(217,130,0,0.35); transform:translateY(-1px); }
+.closing-btn::after { content:'→'; }
+.closing-print { display:none; font-family:var(--mono); font-size:11px; color:var(--mid); opacity:0.6; }
+
+/* ─── FOOTER ─── */
+.footer { display:flex; justify-content:space-between; align-items:center; padding-top:24px; border-top:1px solid rgba(26,20,16,0.07); }
+.footer-l { display:flex; align-items:center; gap:8px; }
+.footer-dot { width:6px; height:6px; background:var(--rust); border-radius:50%; }
+.footer-name { font-family:var(--mono); font-size:10px; letter-spacing:0.14em; color:var(--mid); }
+.footer-r { display:flex; gap:20px; }
+.footer-r span, .footer-r a { font-family:var(--mono); font-size:10px; color:rgba(26,20,16,0.28); text-decoration:none; }
+.footer-r a:hover { color:var(--rust); }
+
+/* ─── SAVE BAR ─── */
+.bar {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); border-radius: 999px;
+  padding: 12px 16px 12px 24px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18); z-index: 100; white-space: nowrap;
+}
+.bar p { font-family:var(--mono); font-size:10px; color:rgba(255,255,255,0.25); letter-spacing:0.06em; }
+.bar button { background:var(--rust); color:white; font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding:9px 20px; border:none; border-radius:999px; cursor:pointer; transition:background 0.18s; }
+.bar button:hover { background:#B96800; }
+
+/* ─── PRINT — EVERYTHING BECOMES WHITE + NO BORDERS ─── */
+@media (max-width: 700px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  body { padding: 20px 0 96px; }
+  .page { width: 330px; max-width: calc(100vw - 48px); margin: 0 auto; border-radius: 18px; padding: 30px 16px; gap: 34px; overflow: hidden; }
+  .page * { min-width: 0; }
+  .hdr-top { flex-direction: column; gap: 22px; margin-bottom: 34px; }
+  .meta { width: 100%; text-align: left; }
+  .meta-row { display: grid; grid-template-columns: 42px 1fr; justify-content: stretch; gap: 10px; }
+  .mv { min-width: 0; width: 100%; text-align: right; }
+  h1 { font-size: 36px; line-height: 1; }
+  .tagline { font-size: 10px; max-width: 30ch; }
+  .overview-text { font-size: 15px; max-width: 100%; min-height: 210px; overflow: hidden; overflow-wrap: anywhere; word-break: break-word; }
+  .mv { font-size: 10px; }
+  .pkg-dep, .pay-note { white-space: normal; }
+  .pkg-opt, .care-opt { padding: 20px 18px; }
+  .pkg-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .pkg-badge { white-space: normal; }
+  .pkg-items, .care-opts, .pay-row, .needs { grid-template-columns: 1fr; }
+  .pkg-price { font-size: 32px; }
+  .tl { grid-template-columns: 1fr; gap: 14px; }
+  .tl::before { display: none; }
+  .tl-step { padding-top: 0; display: grid; grid-template-columns: 18px 1fr; column-gap: 10px; }
+  .tl-dot { top: 3px; margin-bottom: 0; }
+  .tl-day, .tl-label { grid-column: 2; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .footer-r { flex-direction: column; gap: 8px; }
+  .bar { left: 10px; right: 10px; transform: none; border-radius: 18px; justify-content: space-between; white-space: normal; padding: 12px 14px; }
+  .bar p { line-height: 1.5; }
+  .bar button { flex-shrink: 0; padding: 9px 14px; }
+}
+
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  @page { margin: 16mm; size: A4; }
+
+  body { background: white !important; padding: 0 !important; }
+  .bar { display: none !important; }
+
+  .page {
+    background: white !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    gap: 36px !important;
+  }
+
+  /* packages — hide unselected, remove border from selected */
+  .pkg-opt { display: none !important; }
+  .pkg-opt.sel {
+    display: block !important;
+    background: white !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* care — hide unselected, remove border from selected */
+  .care-opt { display: none !important; }
+  .care-opt.sel {
+    display: block !important;
+    background: white !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .care-opts { grid-template-columns: 1fr !important; }
+
+  /* all other blocks — white, no borders */
+  .pkg-opts, .care-opts { gap: 0 !important; }
+  .pay-block { background: white !important; border: none !important; border-radius: 0 !important; padding: 0 0 0 0 !important; }
+  .pay-block.primary { background: var(--rust) !important; border-radius: 10px !important; padding: 16px 20px !important; }
+  .pay-row { gap: 32px !important; }
+  .need { background: white !important; border-radius: 0 !important; padding: 6px 0 !important; border-bottom: 1px solid rgba(26,20,16,0.07) !important; }
+  .needs { gap: 0 !important; }
+  .footer { border-top: 1px solid rgba(26,20,16,0.10) !important; }
+
+  /* closing — hide button, show plain text */
+  .closing-btn { display: none !important; }
+  .closing-print { display: block !important; }
+  .closing { padding: 0 !important; }
+
+  /* keep everything together */
+  .tl, .pay-row, .needs, .care-opts { break-inside: avoid; }
+  .pkg-opt.sel, .care-opt.sel { break-inside: avoid; }
+}
+.family-note { padding: 18px 20px; border-radius: 14px; background: rgba(217,130,0,0.08); border: 1px solid rgba(217,130,0,0.22); font-family: var(--mono); font-size: 11px; color: var(--mid); line-height: 1.7; }
+.family-note strong { color: var(--ink); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div>
+    <div class="hdr-top">
+      <span class="studio">Sunblock Studio</span>
+      <div class="meta">
+        <div class="meta-row"><span class="mk">For</span><input class="mv" value="Harrisburg Plumbers"></div>
+        <div class="meta-row"><span class="mk">Biz</span><input class="mv" value="harrisburgplumbers.com"></div>
+        <div class="meta-row"><span class="mk">Date</span><input class="mv" id="date-val" value=""></div>
+      </div>
+    </div>
+    <h1>Built to bring<br><em>you business.</em></h1>
+    <p class="tagline">A custom plumbing website built to turn local searches and urgent service needs into booked calls — delivered in 10 days.</p>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div>
+    <p class="label">01 — Overview</p>
+    <textarea class="overview-text" rows="3" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Based on our conversation, Harrisburg Plumbers needs a fast, professional website that makes harrisburgplumbers.com look active, trustworthy, and easy to contact. The goal is simple: help people who need plumbing help in Harrisburg quickly understand who you are, what you handle, and how to call or request service.</textarea>
+  </div>
+
+  <!-- PACKAGE -->
+  <div>
+    <p class="label">02 — Package</p>
+    <div class="pkg-opts">
+      <div class="pkg-opt" id="pkg-essential" onclick="selPkg('essential',375,375)">
+        <div class="pkg-row">
+          <p class="pkg-name">Essential</p>
+          <span class="pkg-badge">5 Pages · 7 Days</span>
+        </div>
+        <p class="pkg-price"><sup>$</sup>750</p>
+        <p class="pkg-dep">$375 deposit to start · $375 due on launch</p>
+        <ul class="pkg-items">
+          <li>Home page</li><li>About page</li>
+          <li>Services page</li><li>Contact page</li>
+          <li>1 custom page</li><li>Mobile responsive</li>
+          <li>Contact form</li><li>Fast load speed</li>
+          <li>Domain + hosting setup</li><li>1 month Care Basic free</li>
+        </ul>
+      </div>
+      <div class="pkg-opt sel" id="pkg-pro" onclick="selPkg('pro',600,600)">
+        <div class="pkg-row">
+          <p class="pkg-name">Professional</p>
+          <span class="pkg-badge">8 Pages · 10 Days</span>
+        </div>
+        <p class="pkg-price"><sup>$</sup>1,200</p>
+        <p class="pkg-dep">$600 deposit to start · $600 due on launch</p>
+        <ul class="pkg-items">
+          <li>Everything in Essential</li><li>8 custom pages</li>
+          <li>SEO optimization</li><li>Analytics setup</li>
+          <li>Online booking</li><li>Google Business setup</li>
+          <li>Priority timeline</li><li>3 months Care Pro free</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARE -->
+  <div>
+    <p class="label">03 — Ongoing Care</p>
+    <div class="care-opts">
+      <div class="care-opt" id="care-basic" onclick="selCare('basic')">
+        <p class="care-tag">Basic</p>
+        <p class="care-name">Care Basic</p>
+        <p class="care-price">$79<sub>/mo</sub></p>
+        <ul class="care-list">
+          <li>Hosting &amp; backups</li>
+          <li>Uptime monitoring</li>
+          <li>Security updates</li>
+        </ul>
+      </div>
+      <div class="care-opt sel" id="care-pro" onclick="selCare('pro')">
+        <p class="care-tag">Recommended · Special offer</p>
+        <p class="care-name">Care Pro</p>
+        <p class="care-price">$79<sub>/mo</sub></p>
+        <ul class="care-list">
+          <li>Everything in Basic</li>
+          <li>Unlimited edits</li>
+          <li>Monthly Google Business post</li>
+          <li>Monthly ranking report</li>
+          <li>1 free page per quarter</li>
+          <li>Priority family-owned support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY THIS FITS -->
+  <div>
+    <p class="label">04 — Why This Fits</p>
+    <p class="family-note"><strong>For Harrisburg Plumbers:</strong> plumbing customers usually need help quickly. The site should make the business feel established, local, and easy to contact within seconds. We will structure the site around service pages, phone-first calls to action, local SEO, trust signals, and a clean mobile experience. Sunblock Studio is a family-owned business, so the project stays personal and direct.</p>
+  </div>
+
+  <!-- TIMELINE -->
+  <div>
+    <p class="label">05 — Timeline</p>
+    <div class="tl">
+      <div class="tl-step"><div class="tl-dot lit"></div><p class="tl-day">Day 1</p><p class="tl-label">Deposit + contract signed</p></div>
+      <div class="tl-step"><div class="tl-dot"></div><p class="tl-day">Day 2–3</p><p class="tl-label">Design draft shared</p></div>
+      <div class="tl-step"><div class="tl-dot"></div><p class="tl-day">Day 5–6</p><p class="tl-label">Revisions applied</p></div>
+      <div class="tl-step"><div class="tl-dot"></div><p class="tl-day">Day 7</p><p class="tl-label">Site goes live</p></div>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div>
+    <p class="label">06 — Payment</p>
+    <div class="pay-row">
+      <div class="pay-block primary">
+        <p class="pay-lbl">Due today to start</p>
+        <p class="pay-amt" id="dep-amt">$600</p>
+        <p class="pay-note">50% deposit · via Stripe</p>
+      </div>
+      <div class="pay-block">
+        <p class="pay-lbl">Due on launch</p>
+        <p class="pay-amt" id="bal-amt">$600</p>
+        <p class="pay-note">Remaining 50% before handoff</p>
+      </div>
+    </div>
+    <p class="stripe-note">Professional website selected · Care Pro offered at the Basic monthly rate</p>
+  </div>
+
+  <!-- NEEDS -->
+  <div>
+    <p class="label">07 — What I Need From You</p>
+    <div class="needs">
+      <div class="need"><span class="need-n">01</span><span class="need-t">Your logo — or let me know if you need one</span></div>
+      <div class="need"><span class="need-n">02</span><span class="need-t">3–5 photos of your work, trucks, team, or service area</span></div>
+      <div class="need"><span class="need-n">03</span><span class="need-t">Short bio — your plumbing services, service area, and family-owned story</span></div>
+      <div class="need"><span class="need-n">04</span><span class="need-t">Your preferred domain name (if you have one)</span></div>
+      <div class="need"><span class="need-n">05</span><span class="need-t">2–3 sites you like the style of (optional)</span></div>
+      <div class="need"><span class="need-n">06</span><span class="need-t">Best phone number, email, and service-request details</span></div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p class="closing-h">Built to bring <em>you business.</em></p>
+    <p class="closing-sub">Reply to accept this proposal and I'll send the contract<br>and deposit details within the hour. Sunblock Studio is family-owned, so you will work directly with us from kickoff to launch.</p>
+    <a class="closing-btn" id="cta-link" href="mailto:hello@sunblockstudio.com?subject=Accepting%20Proposal%20%E2%80%94%20Sunblock%20Studio">Accept this proposal</a>
+    <p class="closing-print">Reply to this email to accept · hello@sunblockstudio.com · sunblockstudio.com</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-l"><div class="footer-dot"></div><span class="footer-name">Sunblock Studio</span></div>
+    <div class="footer-r">
+      <a href="https://sunblockstudio.com">sunblockstudio.com</a>
+      <span contenteditable="true">hello@sunblockstudio.com</span>
+      <span>Miami, FL · Valid 14 days</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- SAVE BAR -->
+<div class="bar">
+  <p>Fill in name · select package · select care plan</p>
+  <button onclick="savePDF()">Save as PDF</button>
+</div>
+
+<script>
+document.getElementById('date-val').value = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+function selPkg(id, dep, bal) {
+  document.querySelectorAll('.pkg-opt').forEach(p => p.classList.remove('sel'));
+  document.getElementById('pkg-'+id).classList.add('sel');
+  document.getElementById('dep-amt').textContent = '$' + dep.toLocaleString();
+  document.getElementById('bal-amt').textContent = '$' + bal.toLocaleString();
+}
+
+function selCare(id) {
+  document.querySelectorAll('.care-opt').forEach(c => c.classList.remove('sel'));
+  document.getElementById('care-'+id).classList.add('sel');
+}
+
+function savePDF() {
+  if (!document.querySelector('.pkg-opt.sel'))  { alert('Please select a package first.'); return; }
+  if (!document.querySelector('.care-opt.sel')) { alert('Please select a care plan first.'); return; }
+  window.print();
+}
+</script>
+</body>
+</html>

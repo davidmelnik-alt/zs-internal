@@ -279,8 +279,8 @@ h1 em { font-style:italic; color:var(--rust); display:block; }
     <div class="hdr-top">
       <span class="studio">Sunblock Studio</span>
       <div class="meta">
-        <div class="meta-row"><span class="mk">For</span><input class="mv" value="Client Name"></div>
-        <div class="meta-row"><span class="mk">Biz</span><input class="mv" value="Business Name"></div>
+        <div class="meta-row"><span class="mk">For</span><input class="mv" id="client-name" value="Client Name"></div>
+        <div class="meta-row"><span class="mk">Biz</span><input class="mv" id="business-name" value="Business Name"></div>
         <div class="meta-row"><span class="mk">Date</span><input class="mv" id="date-val" value=""></div>
       </div>
     </div>
@@ -291,7 +291,7 @@ h1 em { font-style:italic; color:var(--rust); display:block; }
   <!-- OVERVIEW -->
   <div>
     <p class="label">01 — Overview</p>
-    <textarea class="overview-text" rows="3" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">Based on our conversation, [Business Name] needs a fast, professional website that builds trust and turns visitors into paying clients. Here's exactly what I'll deliver and how it works.</textarea>
+    <textarea class="overview-text" id="overview-text" rows="3" data-template="Based on our conversation, {{business}} needs a fast, professional website that builds trust and turns visitors into paying clients. Here's exactly what we'll deliver and how it works.">Based on our conversation, Business Name needs a fast, professional website that builds trust and turns visitors into paying clients. Here's exactly what we'll deliver and how it works.</textarea>
   </div>
 
   <!-- PACKAGE -->
@@ -391,9 +391,9 @@ h1 em { font-style:italic; color:var(--rust); display:block; }
 
   <!-- NEEDS -->
   <div>
-    <p class="label">06 — What I Need From You</p>
+    <p class="label">06 — What We Need From You</p>
     <div class="needs">
-      <div class="need"><span class="need-n">01</span><span class="need-t">Your logo — or let me know if you need one</span></div>
+      <div class="need"><span class="need-n">01</span><span class="need-t">Your logo — or let us know if you need one</span></div>
       <div class="need"><span class="need-n">02</span><span class="need-t">3–5 photos of your work, team, or space</span></div>
       <div class="need"><span class="need-n">03</span><span class="need-t">Short bio — what you do and who you serve</span></div>
       <div class="need"><span class="need-n">04</span><span class="need-t">Your preferred domain name (if you have one)</span></div>
@@ -405,7 +405,7 @@ h1 em { font-style:italic; color:var(--rust); display:block; }
   <!-- CLOSING -->
   <div class="closing">
     <p class="closing-h">Built to bring <em>you business.</em></p>
-    <p class="closing-sub">Reply to accept this proposal and I'll send the contract<br>and Stripe deposit link within the hour.</p>
+    <p class="closing-sub">Reply to accept this proposal and we'll send the contract<br>and deposit link within the hour.</p>
     <a class="closing-btn" id="cta-link" href="mailto:hello@sunblockstudio.com?subject=Accepting%20Proposal%20%E2%80%94%20Sunblock%20Studio">Accept this proposal</a>
     <p class="closing-print">Reply to this email to accept · hello@sunblockstudio.com · sunblockstudio.com</p>
   </div>
@@ -424,12 +424,59 @@ h1 em { font-style:italic; color:var(--rust); display:block; }
 
 <!-- SAVE BAR -->
 <div class="bar">
-  <p>Fill in name · select package · select care plan</p>
+  <p>Fill in client + business once · select package · select care plan</p>
   <button onclick="savePDF()">Save as PDF</button>
 </div>
 
 <script>
-document.getElementById('date-val').value = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+const dateVal = document.getElementById('date-val');
+const clientInput = document.getElementById('client-name');
+const businessInput = document.getElementById('business-name');
+const overviewText = document.getElementById('overview-text');
+let lastBusinessName = 'Business Name';
+let overviewEdited = false;
+
+dateVal.value = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+function resizeOverview() {
+  if (!overviewText) return;
+  overviewText.style.height = 'auto';
+  overviewText.style.height = overviewText.scrollHeight + 'px';
+}
+
+function businessName() {
+  const value = businessInput?.value.trim();
+  return value || 'Business Name';
+}
+
+function clientName() {
+  const value = clientInput?.value.trim();
+  return value || 'Client Name';
+}
+
+function applyProposalFields() {
+  const nextBusiness = businessName();
+  const nextClient = clientName();
+  document.querySelectorAll('[data-fill="business"]').forEach((el) => { el.textContent = nextBusiness; });
+  document.querySelectorAll('[data-fill="client"]').forEach((el) => { el.textContent = nextClient; });
+
+  if (overviewText) {
+    const template = overviewText.dataset.template || '';
+    const nextText = template.replaceAll('{{business}}', nextBusiness).replaceAll('{{client}}', nextClient);
+    const canRefresh = !overviewEdited || overviewText.value.includes(lastBusinessName) || overviewText.value.includes('[Business Name]');
+    if (canRefresh) {
+      overviewText.value = nextText;
+      overviewEdited = false;
+      resizeOverview();
+    }
+  }
+  lastBusinessName = nextBusiness;
+}
+
+clientInput?.addEventListener('input', applyProposalFields);
+businessInput?.addEventListener('input', applyProposalFields);
+overviewText?.addEventListener('input', () => { overviewEdited = true; resizeOverview(); });
+applyProposalFields();
 
 function selPkg(id, dep, bal) {
   document.querySelectorAll('.pkg-opt').forEach(p => p.classList.remove('sel'));
